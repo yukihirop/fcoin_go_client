@@ -37,3 +37,11 @@
 [[override]]
 name = "gopkg.in/fsnotify.v1"
 source = "https://github.com/fsnotify/fsnotify.git"
+
+[[constraint]]
+  name = "github.com/k0kubun/pp"
+  version = "2.3.0"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "0.0.3"
