@@ -2,7 +2,6 @@ package fcoin
 
 import (
 	"fcoin_go_client/fcoin/endpoint"
-	"fmt"
 )
 
 type API interface {
@@ -15,17 +14,17 @@ type API interface {
 	SecretKey() string
 
 	// public
-	PublicServerTime() string
-	PublicCurrencies() string
-	PublicSymbols() string
+	PublicServerTime() int
+	PublicCurrencies() int
+	PublicSymbols() int
 }
 
 func NewAPI(opts ...Option) API {
+	// https://stackoverflow.com/questions/44543374/cannot-take-the-address-of-and-cannot-call-pointer-method-on?noredirect=1&lq=1
 	c := (&Configure{}).setDefault()
 	for _, opt := range opts {
 		opt(c)
 	}
-	fmt.Println(c)
 	return c
 }
 
@@ -55,14 +54,29 @@ func (c *Configure) SecretKey() string {
 }
 
 // //http://horie1024.hatenablog.com/entry/2014/08/25/012123
-func (c *Configure) PublicServerTime() string {
-	return endpoint.PublicServerTime()
+// http://text.baldanders.info/golang/interface/
+func (c *Configure) PublicServerTime() (ret int) {
+	ret, _ = endpoint.PublicServerTime(endpointConfig(c))
+	return
 }
 
-func (c *Configure) PublicCurrencies() string {
-	return endpoint.PublicCurrencies()
+func (c *Configure) PublicCurrencies() (ret int) {
+	ret, _ = endpoint.PublicCurrencies(endpointConfig(c))
+	return
 }
 
-func (c *Configure) PublicSymbols() string {
-	return endpoint.PublicSymbols()
+func (c *Configure) PublicSymbols() (ret int) {
+	ret, _ = endpoint.PublicSymbols(endpointConfig(c))
+	return
+}
+
+func endpointConfig(c *Configure) *(endpoint.Configure) {
+	var config endpoint.Configure
+	config.Adapter = c.adapter
+	config.Endpoint = c.endpoint
+	config.UserAgent = c.userAgent
+	config.Proxy = c.proxy
+	config.ApiKey = c.apiKey
+	config.SecretKey = c.secretKey
+	return &config
 }

@@ -43,7 +43,7 @@ var _ = Describe("Api", func() {
 	Describe("PublicServerTime", func() {
 		api := fcoin.NewAPI()
 		subject := api.PublicServerTime()
-		expected := "PublicServerTime"
+		expected := 34
 
 		It("should be expected", func() {
 			Expect(subject).To(Equal(expected))
@@ -53,7 +53,7 @@ var _ = Describe("Api", func() {
 	Describe("PublicCurrencies", func() {
 		api := fcoin.NewAPI()
 		subject := api.PublicCurrencies()
-		expected := "PublicCurrencies"
+		expected := 1363
 
 		It("should be expected", func() {
 			Expect(subject).To(Equal(expected))
@@ -64,7 +64,7 @@ var _ = Describe("Api", func() {
 	Describe("PublicSymbols", func() {
 		api := fcoin.NewAPI()
 		subject := api.PublicSymbols()
-		expected := "PublicSymbols"
+		expected := 15580
 
 		It("should be expected", func() {
 			Expect(subject).To(Equal(expected))
