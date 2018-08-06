@@ -4,7 +4,7 @@ import "fmt"
 
 //http://horie1024.hatenablog.com/entry/2014/08/25/012123
 func PublicServerTime(c *Configure) (ret string, err error) {
-	url := Public(c) + "server-time"
+	url := GetPath(c.Endpoint, "PublicServerTime")
 	ret, err = Get(url)
 	if err != nil {
 		fmt.Println(err)
@@ -14,7 +14,7 @@ func PublicServerTime(c *Configure) (ret string, err error) {
 }
 
 func PublicCurrencies(c *Configure) (ret string, err error) {
-	url := Public(c) + "currencies"
+	url := GetPath(c.Endpoint, "PublicCurrencies")
 	ret, err = Get(url)
 	if err != nil {
 		fmt.Println(err)
@@ -24,15 +24,11 @@ func PublicCurrencies(c *Configure) (ret string, err error) {
 }
 
 func PublicSymbols(c *Configure) (ret string, err error) {
-	url := Public(c) + "symbols"
+	url := GetPath(c.Endpoint, "PublicSymbols")
 	ret, err = Get(url)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	return
-}
-
-func Public(c *Configure) string {
-	return c.Endpoint + "public/"
 }
