@@ -13,7 +13,7 @@ type Configure struct {
 }
 
 //http://horie1024.hatenablog.com/entry/2014/08/25/012123
-func PublicServerTime(c *Configure) (ret int, err error) {
+func PublicServerTime(c *Configure) (ret string, err error) {
 	url := Public(c) + "server-time"
 	ret, err = Get(url)
 	if err != nil {
@@ -23,7 +23,7 @@ func PublicServerTime(c *Configure) (ret int, err error) {
 	return
 }
 
-func PublicCurrencies(c *Configure) (ret int, err error) {
+func PublicCurrencies(c *Configure) (ret string, err error) {
 	url := Public(c) + "currencies"
 	ret, err = Get(url)
 	if err != nil {
@@ -33,7 +33,7 @@ func PublicCurrencies(c *Configure) (ret int, err error) {
 	return
 }
 
-func PublicSymbols(c *Configure) (ret int, err error) {
+func PublicSymbols(c *Configure) (ret string, err error) {
 	url := Public(c) + "symbols"
 	ret, err = Get(url)
 	if err != nil {

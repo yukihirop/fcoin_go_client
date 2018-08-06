@@ -40,34 +40,4 @@ var _ = Describe("Api", func() {
 			})
 		})
 	})
-	Describe("PublicServerTime", func() {
-		api := fcoin.NewAPI()
-		subject := api.PublicServerTime()
-		expected := 34
-
-		It("should be expected", func() {
-			Expect(subject).To(Equal(expected))
-		})
-	})
-
-	Describe("PublicCurrencies", func() {
-		api := fcoin.NewAPI()
-		subject := api.PublicCurrencies()
-		expected := 1363
-
-		It("should be expected", func() {
-			Expect(subject).To(Equal(expected))
-
-		})
-	})
-
-	Describe("PublicSymbols", func() {
-		api := fcoin.NewAPI()
-		subject := api.PublicSymbols()
-		expected := 15580
-
-		It("should be expected", func() {
-			Expect(subject).To(Equal(expected))
-		})
-	})
 })

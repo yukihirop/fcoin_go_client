@@ -14,9 +14,9 @@ type API interface {
 	SecretKey() string
 
 	// public
-	PublicServerTime() int
-	PublicCurrencies() int
-	PublicSymbols() int
+	PublicServerTime() (string, error)
+	PublicCurrencies() (string, error)
+	PublicSymbols() (string, error)
 }
 
 func NewAPI(opts ...Option) API {
@@ -53,23 +53,6 @@ func (c *Configure) SecretKey() string {
 	return c.secretKey
 }
 
-// //http://horie1024.hatenablog.com/entry/2014/08/25/012123
-// http://text.baldanders.info/golang/interface/
-func (c *Configure) PublicServerTime() (ret int) {
-	ret, _ = endpoint.PublicServerTime(endpointConfig(c))
-	return
-}
-
-func (c *Configure) PublicCurrencies() (ret int) {
-	ret, _ = endpoint.PublicCurrencies(endpointConfig(c))
-	return
-}
-
-func (c *Configure) PublicSymbols() (ret int) {
-	ret, _ = endpoint.PublicSymbols(endpointConfig(c))
-	return
-}
-
 func endpointConfig(c *Configure) *(endpoint.Configure) {
 	var config endpoint.Configure
 	config.Adapter = c.adapter
@@ -79,4 +62,21 @@ func endpointConfig(c *Configure) *(endpoint.Configure) {
 	config.ApiKey = c.apiKey
 	config.SecretKey = c.secretKey
 	return &config
+}
+
+// //http://horie1024.hatenablog.com/entry/2014/08/25/012123
+// http://text.baldanders.info/golang/interface/
+func (c *Configure) PublicServerTime() (ret string, err error) {
+	ret, err = endpoint.PublicServerTime(endpointConfig(c))
+	return
+}
+
+func (c *Configure) PublicCurrencies() (ret string, err error) {
+	ret, err = endpoint.PublicCurrencies(endpointConfig(c))
+	return
+}
+
+func (c *Configure) PublicSymbols() (ret string, err error) {
+	ret, err = endpoint.PublicSymbols(endpointConfig(c))
+	return
 }
