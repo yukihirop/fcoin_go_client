@@ -6,12 +6,12 @@ import (
 
 type API interface {
 	// getter
-	Adapter() string
-	EndPoint() string
-	UserAgent() string
-	Proxy() string
-	ApiKey() string
-	SecretKey() string
+	GetAdapter() string
+	GetEndPoint() string
+	GetUserAgent() string
+	GetProxy() string
+	GetApiKey() string
+	GetSecretKey() string
 
 	// public
 	PublicServerTime() (string, error)
@@ -29,38 +29,38 @@ func NewAPI(opts ...Option) API {
 }
 
 // getter
-func (c *Configure) Adapter() string {
-	return c.adapter
+func (c *Configure) GetAdapter() string {
+	return c.Adapter
 }
 
-func (c *Configure) EndPoint() string {
-	return c.endpoint
+func (c *Configure) GetEndPoint() string {
+	return c.Endpoint
 }
 
-func (c *Configure) UserAgent() string {
-	return c.userAgent
+func (c *Configure) GetUserAgent() string {
+	return c.UserAgent
 }
 
-func (c *Configure) Proxy() string {
-	return c.proxy
+func (c *Configure) GetProxy() string {
+	return c.Proxy
 }
 
-func (c *Configure) ApiKey() string {
-	return c.apiKey
+func (c *Configure) GetApiKey() string {
+	return c.ApiKey
 }
 
-func (c *Configure) SecretKey() string {
-	return c.secretKey
+func (c *Configure) GetSecretKey() string {
+	return c.SecretKey
 }
 
 func endpointConfig(c *Configure) *(endpoint.Configure) {
 	var config endpoint.Configure
-	config.Adapter = c.adapter
-	config.Endpoint = c.endpoint
-	config.UserAgent = c.userAgent
-	config.Proxy = c.proxy
-	config.ApiKey = c.apiKey
-	config.SecretKey = c.secretKey
+	config.Adapter = c.Adapter
+	config.Endpoint = c.Endpoint
+	config.UserAgent = c.UserAgent
+	config.Proxy = c.Proxy
+	config.ApiKey = c.ApiKey
+	config.SecretKey = c.SecretKey
 	return &config
 }
 

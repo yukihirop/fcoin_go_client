@@ -9,12 +9,12 @@ const DEFAULT_SERECT_KEY = "fcoin secret api key"
 
 type Configure struct {
 	//  The adapter that will be used to connect if none is set
-	adapter   string
-	endpoint  string
-	userAgent string
-	proxy     string
-	apiKey    string
-	secretKey string
+	Adapter   string
+	Endpoint  string
+	UserAgent string
+	Proxy     string
+	ApiKey    string
+	SecretKey string
 }
 
 //Option is function value of functional options
@@ -23,37 +23,37 @@ type Option func(*Configure)
 
 func Adapter(a string) Option {
 	return func(c *Configure) {
-		c.adapter = a
+		c.Adapter = a
 	}
 }
 
 func EndPoint(e string) Option {
 	return func(c *Configure) {
-		c.endpoint = e
+		c.Endpoint = e
 	}
 }
 
 func UserAgent(u string) Option {
 	return func(c *Configure) {
-		c.userAgent = u
+		c.UserAgent = u
 	}
 }
 
 func Proxy(p string) Option {
 	return func(c *Configure) {
-		c.proxy = p
+		c.Proxy = p
 	}
 }
 
 func ApiKey(a string) Option {
 	return func(c *Configure) {
-		c.apiKey = a
+		c.ApiKey = a
 	}
 }
 
 func SecretKey(s string) Option {
 	return func(c *Configure) {
-		c.secretKey = s
+		c.SecretKey = s
 	}
 }
 
@@ -63,12 +63,12 @@ func (c *Configure) setConfig(config *Configure) *Configure {
 
 func (c *Configure) setDefault() *Configure {
 	c = &Configure{
-		adapter:   DEFAULT_ADAPTER,
-		endpoint:  DEFAULT_ENDPOINT,
-		userAgent: DEFAULT_USER_AGENT,
-		proxy:     DEFAULT_PROXY,
-		apiKey:    DEFAULT_API_KEY,
-		secretKey: DEFAULT_SERECT_KEY,
+		Adapter:   DEFAULT_ADAPTER,
+		Endpoint:  DEFAULT_ENDPOINT,
+		UserAgent: DEFAULT_USER_AGENT,
+		Proxy:     DEFAULT_PROXY,
+		ApiKey:    DEFAULT_API_KEY,
+		SecretKey: DEFAULT_SERECT_KEY,
 	}
 	return c
 }
