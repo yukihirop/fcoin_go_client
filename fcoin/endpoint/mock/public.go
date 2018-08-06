@@ -1,19 +1,22 @@
 package mock
 
-func PublicServerTime(cassetName string) (ret string, err error) {
-	m := &Mock{cassetName: cassetName}
-	ret, err = m.Get("https://api.fcoin.com/v2/public/server-time")
+func (m *Mock) PublicServerTime(cassetName string) (ret string, err error) {
+	m.cassetName = cassetName
+	url := m.url("public", "PublicServerTime")
+	ret, err = m.Get(url)
 	return
 }
 
-func PublicCurrencies(cassetName string) (ret string, err error) {
-	m := &Mock{cassetName: cassetName}
-	ret, err = m.Get("https://api.fcoin.com/v2/public/currencies")
+func (m *Mock) PublicCurrencies(cassetName string) (ret string, err error) {
+	m.cassetName = cassetName
+	url := m.url("public", "PublicCurrencies")
+	ret, err = m.Get(url)
 	return
 }
 
-func PublicSymbols(cassetName string) (ret string, err error) {
-	m := &Mock{cassetName: cassetName}
-	ret, err = m.Get("https://api.fcoin.com/v2/public/symbols")
+func (m *Mock) PublicSymbols(cassetName string) (ret string, err error) {
+	m.cassetName = cassetName
+	url := m.url("public", "PublicSymbols")
+	ret, err = m.Get(url)
 	return
 }

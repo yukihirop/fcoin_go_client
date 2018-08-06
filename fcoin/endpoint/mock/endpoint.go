@@ -1,6 +1,8 @@
 package mock
 
 import (
+	"fcoin_go_client/fcoin"
+	"fcoin_go_client/fcoin/endpoint"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -10,7 +12,20 @@ import (
 )
 
 type Mock struct {
+	endPoint   string
 	cassetName string
+}
+
+func NewMockAPI() (m *Mock) {
+	api := fcoin.NewAPI()
+	m = &Mock{endPoint: api.GetEndPoint()}
+	return
+}
+
+func (m *Mock) url(endPoint string, methodName string) (ret string) {
+	path := endpoint.GetPath(endPoint, methodName)
+	ret = m.endPoint + path
+	return
 }
 
 func (m *Mock) Get(url string) (ret string, err error) {
