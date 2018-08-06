@@ -1,0 +1,7 @@
+---
+fcoin:
+  endpoints:
+    public:
+      PublicServerTime: "public/server-time"
+      PublicCurrencies: "public/currencies"
+      PublicSymbols: "public/symbols"
