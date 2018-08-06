@@ -168,6 +168,22 @@
 
 [[projects]]
   branch = "v1"
+  digest = "1:23fc86a644517c24115801c487921dbca64199a17b4c4bd057dcd97e59605684"
+  name = "gopkg.in/jarcoal/httpmock.v1"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8007e27cdb3239fcfc95c1274d7d8cbcc68b7d52"
+
+[[projects]]
+  digest = "1:a0183aa9cada6f054a1b10e5cd69f47259749c687ca20b7f8703008137d1a855"
+  name = "gopkg.in/seborama/govcr.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9e77e74cccb8f13c6d3e069f0a0f16b2e3ee54ae"
+  version = "2.4.1"
+
+[[projects]]
+  branch = "v1"
   digest = "1:0caa92e17bc0b65a98c63e5bc76a9e844cd5e56493f8fdbb28fad101a16254d9"
   name = "gopkg.in/tomb.v1"
   packages = ["."]
@@ -190,6 +206,8 @@
     "github.com/onsi/ginkgo",
     "github.com/onsi/gomega",
     "github.com/spf13/cobra",
+    "gopkg.in/jarcoal/httpmock.v1",
+    "gopkg.in/seborama/govcr.v2",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
