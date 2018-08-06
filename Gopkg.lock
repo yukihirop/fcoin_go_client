@@ -2,6 +2,56 @@
 
 
 [[projects]]
+  digest = "1:b16fbfbcc20645cb419f78325bb2e85ec729b338e996a228124d68931a6f2a37"
+  name = "github.com/BurntSushi/toml"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
+  version = "v0.3.0"
+
+[[projects]]
+  digest = "1:b520b55fc1146c5b0eea03b07233f7a3d4a9be985c037c91ea6b82ecb81bd521"
+  name = "github.com/bitly/go-simplejson"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "aabad6e819789e569bd6aabf444c935aa9ba1e44"
+  version = "v0.5.0"
+
+[[projects]]
+  digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
+  name = "github.com/fsnotify/fsnotify"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
+  version = "v1.4.7"
+
+[[projects]]
+  digest = "1:2cd7915ab26ede7d95b8749e6b1f933f1c6d5398030684e6505940a10f31cfda"
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
+  version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:12247a2e99a060cc692f6680e5272c8adf0b8f572e6bce0d7095e624c958a240"
+  name = "github.com/hashicorp/hcl"
+  packages = [
+    ".",
+    "hcl/ast",
+    "hcl/parser",
+    "hcl/scanner",
+    "hcl/strconv",
+    "hcl/token",
+    "json/parser",
+    "json/scanner",
+    "json/token",
+  ]
+  pruneopts = "UT"
+  revision = "ef8a98b0bbce4a65b5aa4c368430a80ddc533168"
+
+[[projects]]
   digest = "1:a1038ef593beb4771c8f0f9c26e8b00410acd800af5c6864651d9bf160ea1813"
   name = "github.com/hpcloud/tail"
   packages = [
@@ -14,6 +64,14 @@
   pruneopts = "UT"
   revision = "a30252cb686a21eb2d0b98132633053ec2f7f1e5"
   version = "v1.0.0"
+
+[[projects]]
+  digest = "1:8eb1de8112c9924d59bf1d3e5c26f5eaa2bfc2a5fcbb92dc1c2e4546d695f277"
+  name = "github.com/imdario/mergo"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9f23e2d6bd2a77f959b2bf6acdbefd708a83a4a4"
+  version = "v0.3.6"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -46,6 +104,26 @@
   pruneopts = "UT"
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
+
+[[projects]]
+  digest = "1:0bc6f41fb6cdf1bb9e655be08ed9fcee36d2223d5afa1fc4b99d8a3c4280297f"
+  name = "github.com/micro/go-config"
+  packages = [
+    ".",
+    "encoder",
+    "encoder/hcl",
+    "encoder/json",
+    "encoder/toml",
+    "encoder/xml",
+    "encoder/yaml",
+    "reader",
+    "reader/json",
+    "source",
+    "source/file",
+  ]
+  pruneopts = "UT"
+  revision = "3904282c3ef78454df3c3c0b880fb780778ad16a"
+  version = "v0.7.0"
 
 [[projects]]
   digest = "1:42e29deef12327a69123b9cb2cb45fee4af5c12c2a23c6e477338279a052703f"
@@ -167,14 +245,6 @@
   version = "v1.4.7"
 
 [[projects]]
-  branch = "v1"
-  digest = "1:23fc86a644517c24115801c487921dbca64199a17b4c4bd057dcd97e59605684"
-  name = "gopkg.in/jarcoal/httpmock.v1"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "8007e27cdb3239fcfc95c1274d7d8cbcc68b7d52"
-
-[[projects]]
   digest = "1:a0183aa9cada6f054a1b10e5cd69f47259749c687ca20b7f8703008137d1a855"
   name = "gopkg.in/seborama/govcr.v2"
   packages = ["."]
@@ -203,10 +273,11 @@
   analyzer-version = 1
   input-imports = [
     "github.com/k0kubun/pp",
+    "github.com/micro/go-config",
+    "github.com/micro/go-config/source/file",
     "github.com/onsi/ginkgo",
     "github.com/onsi/gomega",
     "github.com/spf13/cobra",
-    "gopkg.in/jarcoal/httpmock.v1",
     "gopkg.in/seborama/govcr.v2",
   ]
   solver-name = "gps-cdcl"
