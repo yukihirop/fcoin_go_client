@@ -8,21 +8,25 @@ import (
 	"time"
 )
 
-func Connect(req *http.Request) (int, error) {
+func Connect(req *http.Request) (ret string, err error) {
 	client := &http.Client{Timeout: time.Duration(10) * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Println(err)
+		fmt.Println(err)
+		return
 	}
-
+	// https://qiita.com/jpshadowapps/items/463b2623209479adcd88
 	defer resp.Body.Close()
-	return Execute(resp)
+	ret, _ = Execute(resp)
+	return
 }
 
-func Execute(resp *http.Response) (ret int, err error) {
+func Execute(resp *http.Response) (ret string, err error) {
 	b, err := ioutil.ReadAll(resp.Body)
+	ret = string(b)
 	if err != nil {
-		return fmt.Println(err)
+		fmt.Println(err)
+		return
 	}
-	return fmt.Println(string(b))
+	return
 }

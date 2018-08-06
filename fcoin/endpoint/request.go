@@ -6,23 +6,27 @@ import (
 	"net/http"
 )
 
-func Get(url string) (int, error) {
-	return Request("GET", url, nil)
+func Get(url string) (ret string, err error) {
+	ret, err = Request("GET", url, nil)
+	return
 }
 
-func Post(url string, body *io.Reader) (int, error) {
-	return Request("POST", url, body)
+func Post(url string, body *io.Reader) (ret string, err error) {
+	ret, err = Request("POST", url, body)
+	return
 }
 
-func Request(httpMethod string, url string, body *io.Reader) (int, error) {
+func Request(httpMethod string, url string, body *io.Reader) (ret string, err error) {
 	req, err := http.NewRequest(httpMethod, url, nil)
 	if err != nil {
-		return fmt.Println(err)
+		fmt.Println(err)
+		return
 	}
 	// req.URL.RawQuery = url.values.Encode()
 
 	// Add Authorization Header
 	// req.Header.Add
 
-	return Connect(req)
+	ret, _ = Connect(req)
+	return
 }
