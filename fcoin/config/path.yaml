@@ -5,3 +5,8 @@ fcoin:
       PublicServerTime: "public/server-time"
       PublicCurrencies: "public/currencies"
       PublicSymbols: "public/symbols"
+    market:
+      MarketTicker: "market/ticker"
+      MarketDepth: "market/depth"
+      MarketTrades: "market/trades"
+      MarketCandles: "market/candles"
