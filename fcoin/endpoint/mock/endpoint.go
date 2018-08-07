@@ -16,10 +16,15 @@ type Mock struct {
 	cassetName string
 }
 
-func NewMockAPI(cassetName string) (m *Mock) {
+type MockAPI interface {
+	PublicServerTime() (string, error)
+	PublicCurrencies() (string, error)
+	PublicSymbols() (string, error)
+}
+
+func NewMockAPI(cassetName string) MockAPI {
 	api := fcoin.NewAPI()
-	m = &Mock{endPoint: api.GetEndPoint(), cassetName: cassetName}
-	return
+	return &Mock{endPoint: api.GetEndPoint(), cassetName: cassetName}
 }
 
 func (m *Mock) url(endPoint string, methodName string) (ret string) {
