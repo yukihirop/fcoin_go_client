@@ -17,6 +17,12 @@ type API interface {
 	PublicServerTime() (string, error)
 	PublicCurrencies() (string, error)
 	PublicSymbols() (string, error)
+
+	// market
+	MarketTicker(string) (string, error)
+	MarketDepth(string, string) (string, error)
+	MarketTrades(string) (string, error)
+	MarketCandles(string, string) (string, error)
 }
 
 func NewAPI(opts ...Option) API {
@@ -78,5 +84,25 @@ func (c *Configure) PublicCurrencies() (ret string, err error) {
 
 func (c *Configure) PublicSymbols() (ret string, err error) {
 	ret, err = endpoint.PublicSymbols(endpointConfig(c))
+	return
+}
+
+func (c *Configure) MarketTicker(symbol string) (ret string, err error) {
+	ret, err = endpoint.MarketTicker(endpointConfig(c), endpoint.Symbol(symbol))
+	return
+}
+
+func (c *Configure) MarketDepth(symbol string, level string) (ret string, err error) {
+	ret, err = endpoint.MarketDepth(endpointConfig(c), endpoint.Symbol(symbol), endpoint.Level(level))
+	return
+}
+
+func (c *Configure) MarketTrades(symbol string) (ret string, err error) {
+	ret, err = endpoint.MarketTrades(endpointConfig(c), endpoint.Symbol(symbol))
+	return
+}
+
+func (c *Configure) MarketCandles(symbol string, resolution string) (ret string, err error) {
+	ret, err = endpoint.MarketCandles(endpointConfig(c), endpoint.Symbol(symbol), endpoint.Resolution(resolution))
 	return
 }
