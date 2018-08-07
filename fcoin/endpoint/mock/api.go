@@ -17,9 +17,17 @@ type Mock struct {
 }
 
 type MockAPI interface {
+
+	//public
 	PublicServerTime() (string, error)
 	PublicCurrencies() (string, error)
 	PublicSymbols() (string, error)
+
+	//market
+	MarketTicker(...Option) (string, error)
+	MarketDepth(...Option) (string, error)
+	MarketTrades(...Option) (string, error)
+	MarketCandles(...Option) (string, error)
 }
 
 func NewMockAPI(cassetName string) MockAPI {
