@@ -16,9 +16,9 @@ type Mock struct {
 	cassetName string
 }
 
-func NewMockAPI() (m *Mock) {
+func NewMockAPI(cassetName string) (m *Mock) {
 	api := fcoin.NewAPI()
-	m = &Mock{endPoint: api.GetEndPoint()}
+	m = &Mock{endPoint: api.GetEndPoint(), cassetName: cassetName}
 	return
 }
 
