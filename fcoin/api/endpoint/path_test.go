@@ -1,7 +1,7 @@
-package api_test
+package endpoint_test
 
 import (
-	. "fcoin_go_client/fcoin/api"
+	. "fcoin_go_client/fcoin/api/endpoint"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

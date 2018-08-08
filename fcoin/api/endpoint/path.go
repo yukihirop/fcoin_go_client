@@ -1,4 +1,4 @@
-package api
+package endpoint
 
 import (
 	"path/filepath"
@@ -8,7 +8,7 @@ import (
 )
 
 func GetPath(endPoint string, methodName string) (ret string) {
-	fcoinDir, _ := filepath.Abs("../")
+	fcoinDir, _ := filepath.Abs("../../")
 	filePath := fcoinDir + "/config/path.yaml"
 	fileSource := file.NewSource(file.WithPath(filePath))
 	config.Load(fileSource)
