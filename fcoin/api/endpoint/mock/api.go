@@ -2,7 +2,7 @@ package mock
 
 import (
 	"fcoin_go_client/fcoin"
-	"fcoin_go_client/fcoin/endpoint"
+	"fcoin_go_client/fcoin/api"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -36,7 +36,7 @@ func NewMockAPI(cassetName string) MockAPI {
 }
 
 func (m *Mock) url(endPoint string, methodName string) (ret string) {
-	path := endpoint.GetPath(endPoint, methodName)
+	path := api.GetPath(endPoint, methodName)
 	ret = m.endPoint + path
 	return
 }
