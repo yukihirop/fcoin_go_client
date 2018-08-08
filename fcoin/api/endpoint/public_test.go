@@ -1,10 +1,10 @@
 package endpoint_test
 
 import (
+	"fcoin_go_client/fcoin/api/endpoint/mock"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	"fcoin_go_client/fcoin/endpoint/mock"
 )
 
 var _ = Describe("Public", func() {
