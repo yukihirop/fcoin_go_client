@@ -1,5 +1,5 @@
 // https://stackoverflow.com/questions/14416275/error-cant-load-package-package-my-prog-found-packages-my-prog-and-main?rq=1
-package endpoint
+package api
 
 import (
 	"fmt"
