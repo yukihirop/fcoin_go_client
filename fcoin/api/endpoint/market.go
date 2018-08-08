@@ -1,6 +1,9 @@
 package endpoint
 
-import "fmt"
+import (
+	"fcoin_go_client/fcoin/api"
+	"fmt"
+)
 
 type Market struct {
 	Symbol     string
@@ -8,32 +11,32 @@ type Market struct {
 	Resolution string
 }
 
-type Option func(*Market)
-type Options []Option
+type MarketOption func(*Market)
+type MarketOptions []MarketOption
 
-func Symbol(s string) Option {
+func Symbol(s string) MarketOption {
 	return func(m *Market) {
 		m.Symbol = s
 	}
 }
 
-func Level(l string) Option {
+func Level(l string) MarketOption {
 	return func(m *Market) {
 		m.Level = l
 	}
 }
 
-func Resolution(r string) Option {
+func Resolution(r string) MarketOption {
 	return func(m *Market) {
 		m.Resolution = r
 	}
 }
 
 //http://horie1024.hatenablog.com/entry/2014/08/25/012123
-func MarketTicker(c *Configure, opts ...Option) (ret string, err error) {
+func MarketTicker(c *Configure, opts ...MarketOption) (ret string, err error) {
 	ma := setMarket(opts)
 	url := GetPath(c.Endpoint, "MarketTicker") + "/" + ma.Symbol
-	ret, err = Get(url)
+	ret, err = api.Get(url)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -41,10 +44,10 @@ func MarketTicker(c *Configure, opts ...Option) (ret string, err error) {
 	return
 }
 
-func MarketDepth(c *Configure, opts ...Option) (ret string, err error) {
+func MarketDepth(c *Configure, opts ...MarketOption) (ret string, err error) {
 	ma := setMarket(opts)
 	url := GetPath(c.Endpoint, "MarketDepth") + "/" + ma.Symbol + "/" + ma.Level
-	ret, err = Get(url)
+	ret, err = api.Get(url)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,10 +55,10 @@ func MarketDepth(c *Configure, opts ...Option) (ret string, err error) {
 	return
 }
 
-func MarketTrades(c *Configure, opts ...Option) (ret string, err error) {
+func MarketTrades(c *Configure, opts ...MarketOption) (ret string, err error) {
 	ma := setMarket(opts)
 	url := GetPath(c.Endpoint, "MarketTrades") + "/" + ma.Symbol
-	ret, err = Get(url)
+	ret, err = api.Get(url)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -63,10 +66,10 @@ func MarketTrades(c *Configure, opts ...Option) (ret string, err error) {
 	return
 }
 
-func MarketCandles(c *Configure, opts ...Option) (ret string, err error) {
+func MarketCandles(c *Configure, opts ...MarketOption) (ret string, err error) {
 	ma := setMarket(opts)
 	url := GetPath(c.Endpoint, "MarketCandles") + "/" + ma.Resolution + "/" + ma.Symbol
-	ret, err = Get(url)
+	ret, err = api.Get(url)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -74,7 +77,7 @@ func MarketCandles(c *Configure, opts ...Option) (ret string, err error) {
 	return
 }
 
-func setMarket(opts Options) (ma *Market) {
+func setMarket(opts MarketOptions) (ma *Market) {
 	ma = &Market{}
 	for _, opt := range opts {
 		opt(ma)
