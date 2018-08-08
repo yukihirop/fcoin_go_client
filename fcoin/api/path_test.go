@@ -1,7 +1,7 @@
-package endpoint_test
+package api_test
 
 import (
-	"fcoin_go_client/fcoin/endpoint"
+	. "fcoin_go_client/fcoin/api"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,14 +11,14 @@ var _ = Describe("Path", func() {
 	Describe("GetPath", func() {
 		Context("when path exist", func() {
 			//public
-			publicServerTime := endpoint.GetPath("public", "PublicServerTime")
-			publicCurrencies := endpoint.GetPath("public", "PublicCurrencies")
-			publicSymbols := endpoint.GetPath("public", "PublicSymbols")
+			publicServerTime := GetPath("public", "PublicServerTime")
+			publicCurrencies := GetPath("public", "PublicCurrencies")
+			publicSymbols := GetPath("public", "PublicSymbols")
 			//market
-			marketTicker := endpoint.GetPath("market", "MarketTicker")
-			marketDepth := endpoint.GetPath("market", "MarketDepth")
-			marketTrades := endpoint.GetPath("market", "MarketTrades")
-			marketCandles := endpoint.GetPath("market", "MarketCandles")
+			marketTicker := GetPath("market", "MarketTicker")
+			marketDepth := GetPath("market", "MarketDepth")
+			marketTrades := GetPath("market", "MarketTrades")
+			marketCandles := GetPath("market", "MarketCandles")
 
 			It("should return public/server-time", func() {
 				//public
@@ -34,7 +34,7 @@ var _ = Describe("Path", func() {
 		})
 
 		Context("when path do not exist", func() {
-			subject := endpoint.GetPath("do_not_exist", "")
+			subject := GetPath("do_not_exist", "")
 			It("should be blank", func() {
 				Expect(subject).To(Equal(""))
 			})
