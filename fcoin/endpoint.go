@@ -15,8 +15,8 @@ type Endpoint interface {
 	MarketCandles(string, string) (string, error)
 }
 
-func endpointConfig(c *Configure) *(endpoint.Configure) {
-	var config endpoint.Configure
+func endpointConfig(c *Configure) *(endpoint.EndpointConfigure) {
+	var config endpoint.EndpointConfigure
 	config.Adapter = c.Adapter
 	config.Endpoint = c.Endpoint
 	config.UserAgent = c.UserAgent
