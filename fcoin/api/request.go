@@ -6,18 +6,18 @@ import (
 	"net/http"
 )
 
-func Get(url string) (ret string, err error) {
-	ret, err = Request("GET", url, nil)
+func (c *APIConfigure) Get(url string) (ret string, err error) {
+	ret, err = c.Request("GET", url, nil)
 	return
 }
 
-func Post(url string, body *io.Reader) (ret string, err error) {
-	ret, err = Request("POST", url, body)
+func (c *APIConfigure) Post(url string, body io.Reader) (ret string, err error) {
+	ret, err = c.Request("POST", url, body)
 	return
 }
 
-func Request(httpMethod string, url string, body *io.Reader) (ret string, err error) {
-	req, err := http.NewRequest(httpMethod, url, nil)
+func (c *APIConfigure) Request(httpMethod string, url string, body io.Reader) (ret string, err error) {
+	req, err := http.NewRequest(httpMethod, url, body)
 	if err != nil {
 		fmt.Println(err)
 		return
