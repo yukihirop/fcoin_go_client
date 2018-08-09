@@ -1,51 +1,59 @@
 package endpoint
 
-type Configure struct {
-	//  The adapter that will be used to connect if none is set
-	Adapter   string
-	Endpoint  string
-	UserAgent string
-	Proxy     string
-	ApiKey    string
-	SecretKey string
+import (
+	"fcoin_go_client/fcoin/api"
+	"strconv"
+)
+
+type EndpointConfigure struct {
+	*api.APIConfigure
 }
 
-//Option is function value of functional options
-// http://text.baldanders.info/golang/functional-options-pattern/
-type ConfigureOption func(*Configure)
+type Endpoint struct {
+	Symbol     string
+	Level      string
+	Resolution string
+	Side       string
+	Price      string
+}
 
-func Adapter(a string) ConfigureOption {
-	return func(c *Configure) {
-		c.Adapter = a
+type EndpointOption func(*Endpoint)
+type EndpointsOptions []EndpointOption
+
+func Symbol(s string) EndpointOption {
+	return func(e *Endpoint) {
+		e.Symbol = s
 	}
 }
 
-func EndPoint(e string) ConfigureOption {
-	return func(c *Configure) {
-		c.Endpoint = e
+func Level(l string) EndpointOption {
+	return func(e *Endpoint) {
+		e.Level = l
 	}
 }
 
-func UserAgent(u string) ConfigureOption {
-	return func(c *Configure) {
-		c.UserAgent = u
+func Resolution(r string) EndpointOption {
+	return func(e *Endpoint) {
+		e.Resolution = r
 	}
 }
 
-func Proxy(p string) ConfigureOption {
-	return func(c *Configure) {
-		c.Proxy = p
+func Side(s string) EndpointOption {
+	return func(e *Endpoint) {
+		e.Side = s
 	}
 }
 
-func ApiKey(a string) ConfigureOption {
-	return func(c *Configure) {
-		c.ApiKey = a
+func Price(p int) EndpointOption {
+	return func(e *Endpoint) {
+		e.Price = strconv.Itoa(p)
 	}
 }
 
-func SecretKey(s string) ConfigureOption {
-	return func(c *Configure) {
-		c.SecretKey = s
+func setEndpoint(opts EndpointsOptions) (ma *Endpoint) {
+	ma = &Endpoint{}
+	for _, opt := range opts {
+		opt(ma)
 	}
+	return
 }
