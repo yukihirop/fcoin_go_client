@@ -2,7 +2,7 @@ package endpoint
 
 import (
 	"fcoin_go_client/fcoin/api"
-	"strconv"
+	"fmt"
 )
 
 type EndpointConfigure struct {
@@ -15,6 +15,8 @@ type Endpoint struct {
 	Resolution string
 	Side       string
 	Price      string
+	Amount     string
+	Type       string
 }
 
 type EndpointOption func(*Endpoint)
@@ -44,9 +46,21 @@ func Side(s string) EndpointOption {
 	}
 }
 
-func Price(p int) EndpointOption {
+func Price(p float32) EndpointOption {
 	return func(e *Endpoint) {
-		e.Price = strconv.Itoa(p)
+		e.Price = fmt.Sprint(p)
+	}
+}
+
+func Amount(a float32) EndpointOption {
+	return func(e *Endpoint) {
+		e.Amount = fmt.Sprint(a)
+	}
+}
+
+func Type(t string) EndpointOption {
+	return func(e *Endpoint) {
+		e.Type = t
 	}
 }
 
