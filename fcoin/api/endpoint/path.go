@@ -1,17 +1,36 @@
 package endpoint
 
 import (
-	"path/filepath"
+	"bytes"
 
-	config "github.com/micro/go-config"
-	"github.com/micro/go-config/source/file"
+	"github.com/spf13/viper"
 )
 
 func GetPath(endPoint string, methodName string) (ret string) {
-	fcoinDir, _ := filepath.Abs("../../")
-	filePath := fcoinDir + "/config/path.yaml"
-	fileSource := file.NewSource(file.WithPath(filePath))
-	config.Load(fileSource)
-	ret = config.Get("fcoin", "endpoints", endPoint, methodName).String("")
+	viper.SetConfigType("yaml")
+	var rooting = []byte(`
+    fcoin:
+      endpoints:
+        public:
+          PublicServerTime: "public/server-time"
+          PublicCurrencies: "public/currencies"
+          PublicSymbols: "public/symbols"
+        market:
+          MarketTicker: "market/ticker"
+          MarketDepth: "market/depth"
+          MarketTrades: "market/trades"
+          MarketCandles: "market/candles"
+        orders:
+          CreateOrderLimit: "orders"
+          OrderList: "orders"
+          ReferenceOrder: "orders"
+          CancelOrder: "orders"
+          OrderMatchResults: "orders"
+        accounts:
+          AccountsBalance: "accounts/balance"
+    `)
+	viper.ReadConfig(bytes.NewBuffer(rooting))
+	path := "fcoin.endpoints" + "." + endPoint + "." + methodName
+	ret, _ = viper.Get(path).(string)
 	return
 }
