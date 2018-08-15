@@ -6,7 +6,7 @@ import (
 
 //http://horie1024.hatenablog.com/entry/2014/08/25/012123
 func PublicServerTime(c *EndpointConfigure) (ret string, err error) {
-	url := GetPath(c.Endpoint, "PublicServerTime")
+	url := GetPath("public", "PublicServerTime")
 	ret, err = c.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
@@ -16,7 +16,7 @@ func PublicServerTime(c *EndpointConfigure) (ret string, err error) {
 }
 
 func PublicCurrencies(c *EndpointConfigure) (ret string, err error) {
-	url := GetPath(c.Endpoint, "PublicCurrencies")
+	url := GetPath("public", "PublicCurrencies")
 	ret, err = c.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
@@ -26,7 +26,7 @@ func PublicCurrencies(c *EndpointConfigure) (ret string, err error) {
 }
 
 func PublicSymbols(c *EndpointConfigure) (ret string, err error) {
-	url := GetPath(c.Endpoint, "PublicSymbols")
+	url := GetPath("public", "PublicSymbols")
 	ret, err = c.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
