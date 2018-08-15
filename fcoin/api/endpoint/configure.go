@@ -17,6 +17,11 @@ type Endpoint struct {
 	Price      string
 	Amount     string
 	Type       string
+	States     string
+	PageBefore string
+	PageAfter  string
+	PerPage    string
+	OrderId    string
 }
 
 type EndpointOption func(*Endpoint)
@@ -61,6 +66,36 @@ func Amount(a float32) EndpointOption {
 func Type(t string) EndpointOption {
 	return func(e *Endpoint) {
 		e.Type = t
+	}
+}
+
+func States(s string) EndpointOption {
+	return func(e *Endpoint) {
+		e.States = s
+	}
+}
+
+func PageBefore(pb int) EndpointOption {
+	return func(e *Endpoint) {
+		e.PageBefore = fmt.Sprint(pb)
+	}
+}
+
+func PageAfter(pa int) EndpointOption {
+	return func(e *Endpoint) {
+		e.PageAfter = fmt.Sprint(pa)
+	}
+}
+
+func PerPage(pp int) EndpointOption {
+	return func(e *Endpoint) {
+		e.PerPage = fmt.Sprint(pp)
+	}
+}
+
+func OrderId(o string) EndpointOption {
+	return func(e *Endpoint) {
+		e.OrderId = o
 	}
 }
 
