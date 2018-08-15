@@ -20,6 +20,9 @@ type Endpoint interface {
 	ReferenceOrder(string) (string, error)
 	CancelOrder(string) (string, error)
 	OrderMatchResults(string) (string, error)
+
+	// accounts
+	AccountsBalance() (string, error)
 }
 
 func endpointConfig(c *Configure) *(endpoint.EndpointConfigure) {
