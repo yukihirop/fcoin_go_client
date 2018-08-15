@@ -20,6 +20,11 @@ type MockEndpoint struct {
 	Price      string
 	Amount     string
 	Type       string
+	States     string
+	PageBefore string
+	PageAfter  string
+	PerPage    string
+	OrderId    string
 }
 
 type MockEndpointOption func(*MockEndpoint)
@@ -64,6 +69,36 @@ func Amount(a float32) MockEndpointOption {
 func Type(t string) MockEndpointOption {
 	return func(e *MockEndpoint) {
 		e.Type = t
+	}
+}
+
+func States(s string) MockEndpointOption {
+	return func(e *MockEndpoint) {
+		e.States = s
+	}
+}
+
+func PageBefore(pb int) MockEndpointOption {
+	return func(e *MockEndpoint) {
+		e.PageBefore = fmt.Sprint(pb)
+	}
+}
+
+func PageAfter(pa int) MockEndpointOption {
+	return func(e *MockEndpoint) {
+		e.PageAfter = fmt.Sprint(pa)
+	}
+}
+
+func PerPage(pp int) MockEndpointOption {
+	return func(e *MockEndpoint) {
+		e.PerPage = fmt.Sprint(pp)
+	}
+}
+
+func OrderId(o string) MockEndpointOption {
+	return func(e *MockEndpoint) {
+		e.OrderId = fmt.Sprint(o)
 	}
 }
 
