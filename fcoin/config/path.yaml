@@ -10,3 +10,9 @@ fcoin:
       MarketDepth: "market/depth"
       MarketTrades: "market/trades"
       MarketCandles: "market/candles"
+    orders:
+      CreateOrderLimit: "orders"
+      OrderList: "orders"
+      ReferenceOrder: "orders"
+      CancelOrder: "orders"
+      OrderMatchResults: "orders"
