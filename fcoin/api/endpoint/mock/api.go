@@ -41,6 +41,9 @@ type MockAPI interface {
 	ReferenceOrder(...MockEndpointOption) (string, error)
 	CancelOrder(...MockEndpointOption) (string, error)
 	OrderMatchResults(...MockEndpointOption) (string, error)
+
+	//accounts
+	AccountsBalance() (string, error)
 }
 
 func NewMockAPI(cassetName string) MockAPI {
