@@ -6,24 +6,36 @@ import (
 	"net/http"
 )
 
-func (c *APIConfigure) Get(url string, body io.Reader, payload map[string]string, isAuthorize bool) (ret string, err error) {
-	ret, err = c.Request("GET", url, body, payload, isAuthorize)
+func (c *APIConfigure) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+	ret, err = c.Request("GET", url, query, payload, isAuthorize)
 	return
 }
 
-func (c *APIConfigure) Post(url string, body io.Reader, payload map[string]string, isAuthorize bool) (ret string, err error) {
-	ret, err = c.Request("POST", url, body, payload, isAuthorize)
+func (c *APIConfigure) Post(url string, reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+	ret, err = c.Request("POST", url, reader, payload, isAuthorize)
 	return
 }
 
-func (c *APIConfigure) Request(httpMethod string, url string, body io.Reader, payload map[string]string, isAuthorize bool) (ret string, err error) {
-	req, err := http.NewRequest(httpMethod, url, body)
-	if err != nil {
-		fmt.Println(err)
-		return
+func (c *APIConfigure) Request(httpMethod string, url string, query_or_reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+	var req *http.Request
+	switch httpMethod {
+	case "GET":
+		req, err = http.NewRequest("GET", url, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		// set query parametter
+		query, _ := query_or_reader.(string)
+		req.URL.RawQuery = query
+	case "POST":
+		body, _ := query_or_reader.(io.Reader)
+		req, err = http.NewRequest("POST", url, body)
+		if err != nil {
+			fmt.Println(err)
+		}
+		// Content-Type (json)
+		req.Header.Set("Content-Type", "application/json")
 	}
-	// Content-Type (URL encode)
-	req.Header.Set("Content-Type", "application/json")
 
 	// Authorization
 	if isAuthorize {
