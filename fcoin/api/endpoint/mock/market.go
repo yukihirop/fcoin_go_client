@@ -5,7 +5,7 @@ import "fmt"
 func (m *Mock) MarketTicker(opts ...MockEndpointOption) (ret string, err error) {
 	ma := setMockEndpoint(opts)
 	url := m.url("market", "MarketTicker") + "/" + ma.Symbol
-	ret, err = m.Get(url)
+	ret, err = m.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -16,7 +16,7 @@ func (m *Mock) MarketTicker(opts ...MockEndpointOption) (ret string, err error) 
 func (m *Mock) MarketDepth(opts ...MockEndpointOption) (ret string, err error) {
 	ma := setMockEndpoint(opts)
 	url := m.url("market", "MarketDepth") + "/" + ma.Level + "/" + ma.Symbol
-	ret, err = m.Get(url)
+	ret, err = m.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -27,7 +27,7 @@ func (m *Mock) MarketDepth(opts ...MockEndpointOption) (ret string, err error) {
 func (m *Mock) MarketTrades(opts ...MockEndpointOption) (ret string, err error) {
 	ma := setMockEndpoint(opts)
 	url := m.url("market", "MarketTrades") + "/" + ma.Symbol
-	ret, err = m.Get(url)
+	ret, err = m.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -38,7 +38,7 @@ func (m *Mock) MarketTrades(opts ...MockEndpointOption) (ret string, err error) 
 func (m *Mock) MarketCandles(opts ...MockEndpointOption) (ret string, err error) {
 	ma := setMockEndpoint(opts)
 	url := m.url("market", "MarketCandles") + "/" + ma.Resolution + "/" + ma.Symbol
-	ret, err = m.Get(url)
+	ret, err = m.Get(url, nil, nil, false)
 	if err != nil {
 		fmt.Println(err)
 		return

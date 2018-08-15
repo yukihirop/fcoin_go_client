@@ -37,6 +37,10 @@ type MockAPI interface {
 
 	//orders
 	CreateOrderLimit(...MockEndpointOption) (string, error)
+	OrderList(...MockEndpointOption) (string, error)
+	ReferenceOrder(...MockEndpointOption) (string, error)
+	CancelOrder(...MockEndpointOption) (string, error)
+	OrderMatchResults(...MockEndpointOption) (string, error)
 }
 
 func NewMockAPI(cassetName string) MockAPI {
@@ -55,17 +59,17 @@ func (m *Mock) url(endPoint string, methodName string) (ret string) {
 	return
 }
 
-func (m *Mock) Get(url string) (ret string, err error) {
-	ret, err = m.Request("GET", url, nil, nil)
+func (m *Mock) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+	ret, err = m.Request("GET", url, query, payload, isAuthorize)
 	return
 }
 
-func (m *Mock) Post(url string, body io.Reader, payload map[string]string) (ret string, err error) {
-	ret, err = m.Request("POST", url, body, payload)
+func (m *Mock) Post(url string, reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+	ret, err = m.Request("POST", url, reader, payload, isAuthorize)
 	return
 }
 
-func (m *Mock) Request(httpMethod string, url string, body io.Reader, payload map[string]string) (ret string, err error) {
+func (m *Mock) Request(httpMethod string, url string, query_or_reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
 	var req *http.Request
 	switch httpMethod {
 	case "GET":
@@ -73,8 +77,11 @@ func (m *Mock) Request(httpMethod string, url string, body io.Reader, payload ma
 		if err != nil {
 			fmt.Println(err)
 		}
+		// set query parametter
+		query, _ := query_or_reader.(string)
+		req.URL.RawQuery = query
 	case "POST":
-		// TODO: vcrを使うようにする
+		body, _ := query_or_reader.(io.Reader)
 		req, err = http.NewRequest("POST", url, body)
 		if err != nil {
 			fmt.Println(err)
@@ -84,7 +91,10 @@ func (m *Mock) Request(httpMethod string, url string, body io.Reader, payload ma
 	}
 
 	// authorize
-	m.authorize(req, httpMethod, url, payload)
+	if isAuthorize {
+		m.authorize(req, httpMethod, url, payload)
+	}
+
 	// vcr
 	vcr := govcr.NewVCR(m.cassetName,
 		&govcr.VCRConfig{
@@ -100,9 +110,11 @@ func (m *Mock) Request(httpMethod string, url string, body io.Reader, payload ma
 			},
 			Logging: true,
 		})
+
 	resp, err := vcr.Client.Do(req)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
 	ret, err = Execute(resp)
@@ -115,11 +127,11 @@ func (m *Mock) Request(httpMethod string, url string, body io.Reader, payload ma
 
 func Execute(resp *http.Response) (ret string, err error) {
 	b, err := ioutil.ReadAll(resp.Body)
-	ret = string(b)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	ret = string(b)
 	return
 }
 
