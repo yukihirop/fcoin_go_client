@@ -16,3 +16,5 @@ fcoin:
       ReferenceOrder: "orders"
       CancelOrder: "orders"
       OrderMatchResults: "orders"
+    accounts:
+      AccountsBalance: "accounts/balance"

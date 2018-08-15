@@ -25,6 +25,8 @@ var _ = Describe("Path", func() {
 			referenceOrder := GetPath("orders", "ReferenceOrder")
 			cancelOrder := GetPath("orders", "CancelOrder")
 			orderMatchResults := GetPath("orders", "OrderMatchResults")
+			//accounts
+			accountsBalance := GetPath("accounts", "AccountsBalance")
 
 			It("should return path", func() {
 				//public
@@ -42,6 +44,8 @@ var _ = Describe("Path", func() {
 				Expect(referenceOrder).To(Equal("orders"))
 				Expect(cancelOrder).To(Equal("orders"))
 				Expect(orderMatchResults).To(Equal("orders"))
+				//accounts
+				Expect(accountsBalance).To(Equal("accounts/balance"))
 			})
 		})
 
