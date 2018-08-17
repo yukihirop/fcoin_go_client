@@ -25,17 +25,6 @@ type Endpoint interface {
 	AccountsBalance() (string, error)
 }
 
-func endpointConfig(c *Configure) *(endpoint.EndpointConfigure) {
-	var config endpoint.EndpointConfigure
-	config.Adapter = c.Adapter
-	config.Endpoint = c.Endpoint
-	config.UserAgent = c.UserAgent
-	config.Proxy = c.Proxy
-	config.ApiKey = c.ApiKey
-	config.SecretKey = c.SecretKey
-	return &config
-}
-
 // //http://horie1024.hatenablog.com/entry/2014/08/25/012123
 // http://text.baldanders.info/golang/interface/
 func (c *Configure) PublicServerTime() (ret string, err error) {

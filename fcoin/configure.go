@@ -1,5 +1,7 @@
 package fcoin
 
+import "fcoin_go_client/fcoin/api/endpoint"
+
 const DEFAULT_ADAPTER = "adapter"
 const DEFAULT_ENDPOINT = "https://api.fcoin.com/v2/"
 const DEFAULT_USER_AGENT = "Fcoin Go Client"
@@ -71,4 +73,15 @@ func (c *Configure) setDefault() *Configure {
 		SecretKey: DEFAULT_SERECT_KEY,
 	}
 	return c
+}
+
+func endpointConfig(c *Configure) *(endpoint.EndpointConfigure) {
+	var config endpoint.EndpointConfigure
+	config.Adapter = c.Adapter
+	config.Endpoint = c.Endpoint
+	config.UserAgent = c.UserAgent
+	config.Proxy = c.Proxy
+	config.ApiKey = c.ApiKey
+	config.SecretKey = c.SecretKey
+	return &config
 }
