@@ -45,3 +45,15 @@ source = "https://github.com/fsnotify/fsnotify.git"
 [[constraint]]
   name = "github.com/spf13/cobra"
   version = "0.0.3"
+
+[[constraint]]
+  name = "gopkg.in/seborama/govcr.v2"
+  version = "2.4.1"
+
+[[constraint]]
+  name = "github.com/micro/go-config"
+  version = "0.7.0"
+
+[[constraint]]
+  name = "github.com/spf13/viper"
+  version = "1.1.0"
