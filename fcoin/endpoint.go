@@ -1,6 +1,8 @@
 package fcoin
 
-import "fcoin_go_client/fcoin/api/endpoint"
+import (
+	"fcoin_go_client/fcoin/api/endpoint"
+)
 
 type Endpoint interface {
 	// public
@@ -16,7 +18,7 @@ type Endpoint interface {
 
 	// orders
 	CreateOrderLimit(string, string, float32, float32) (string error)
-	OrderList(string, string, int, int, int) (string, error)
+	OrderList(string, string, interface{}, interface{}, interface{}) (string, error)
 	ReferenceOrder(string) (string, error)
 	CancelOrder(string) (string, error)
 	OrderMatchResults(string) (string, error)
@@ -63,12 +65,22 @@ func (c *Configure) MarketCandles(symbol string, resolution string) (ret string,
 }
 
 func (c *Configure) CreateOrderLimit(symbol string, side string, price float32, amount float32) (ret string, err error) {
-	ret, err = endpoint.CreateOrderLimit(endpointConfig(c), endpoint.Symbol(symbol), endpoint.Side(side), endpoint.Type("limit"), endpoint.Price(price), endpoint.Amount(amount))
+	ret, err = endpoint.CreateOrderLimit(endpointConfig(c), endpoint.Symbol(symbol), endpoint.Side(side), endpoint.Price(price), endpoint.Amount(amount))
 	return
 }
 
-func (c *Configure) OrderList(symbol string, states string, pageBefore int, pageAfter int, perPage int) (ret string, err error) {
-	ret, err = endpoint.OrderList(endpointConfig(c), endpoint.Symbol(symbol), endpoint.States(states), endpoint.PageBefore(pageBefore), endpoint.PageAfter(pageAfter), endpoint.PerPage(perPage))
+func (c *Configure) OrderList(symbol string, states string, pageBefore interface{}, pageAfter interface{}, perPage interface{}) (ret string, err error) {
+	pb, ok_pb := pageBefore.(int)
+	pa, ok_pa := pageAfter.(int)
+	pp, ok_pp := perPage.(int)
+	if ok_pb && ok_pa && ok_pp {
+		ret, err = endpoint.OrderList(endpointConfig(c), endpoint.Symbol(symbol), endpoint.States(states), endpoint.PageBefore(pb), endpoint.PageAfter(pa), endpoint.PerPage(pp))
+	} else if !ok_pb && !ok_pa && ok_pp {
+		ret, err = endpoint.OrderList(endpointConfig(c), endpoint.Symbol(symbol), endpoint.States(states), endpoint.PerPage(pp))
+	} else if !ok_pb && !ok_pa && !ok_pp {
+		ret, err = endpoint.OrderList(endpointConfig(c), endpoint.Symbol(symbol), endpoint.States(states))
+	}
+
 	return
 }
 
@@ -84,5 +96,10 @@ func (c *Configure) CancelOrder(orderId string) (ret string, err error) {
 
 func (c *Configure) OrderMatchResults(orderId string) (ret string, err error) {
 	ret, err = endpoint.OrderMatchResults(endpointConfig(c), endpoint.OrderId(orderId))
+	return
+}
+
+func (c *Configure) AccountsBalance() (ret string, err error) {
+	ret, err = endpoint.AccountsBalance(endpointConfig(c))
 	return
 }
