@@ -6,7 +6,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func GetPath(endPoint string, methodName string) (ret string) {
+func (c *EndpointConfigure) getUrl(endPoint string, methodName string) (ret string) {
+	path := getPath(endPoint, methodName)
+	ret = c.Endpoint + path
+	return
+}
+
+func getPath(endPoint string, methodName string) (ret string) {
 	viper.SetConfigType("yaml")
 	var rooting = []byte(`
     fcoin:
