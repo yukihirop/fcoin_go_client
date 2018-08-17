@@ -9,7 +9,7 @@ import (
 func main() {
 	apiKey := os.Getenv("FCOIN_API_KEY")
 	secretKey := os.Getenv("FCOIN_SECRET_KEY")
-	client := fcoin.NewAPI(fcoin.ApiKey(apiKey), fcoin.SecretKey(secretKey))
+	client := fcoin.NewClient(fcoin.ApiKey(apiKey), fcoin.SecretKey(secretKey))
 
 	// public
 	publicServerTime, _ := client.PublicServerTime()
