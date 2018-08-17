@@ -8,11 +8,19 @@ import (
 
 func (c *APIConfigure) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
 	ret, err = c.Request("GET", url, query, payload, isAuthorize)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	return
 }
 
 func (c *APIConfigure) Post(url string, reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
 	ret, err = c.Request("POST", url, reader, payload, isAuthorize)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	return
 }
 
