@@ -10,7 +10,7 @@ import (
 func CreateOrderLimit(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
 	order := setEndpoint(opts)
 	order.Type = "limit"
-	baseURL := GetPath("orders", "CreateOrderLimit")
+	baseURL := c.getUrl("orders", "CreateOrderLimit")
 	values := url.Values{}
 	// alphabet order
 	values.Add("type", order.Type)
@@ -19,7 +19,9 @@ func CreateOrderLimit(c *EndpointConfigure, opts ...EndpointOption) (ret string,
 	values.Add("price", order.Price)
 	values.Add("amount", order.Amount)
 	reader := bytes.NewBuffer(validJSONBody(values))
-	ret, err = c.Post(baseURL, reader, validPayload(order), true)
+	// alphabet order
+	validPayload := map[string]string{"amount": order.Amount, "side": order.Side, "symbol": order.Symbol, "price": order.Price, "type": order.Type}
+	ret, err = apiConfig(c).Post(baseURL, reader, validPayload, true)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -29,18 +31,17 @@ func CreateOrderLimit(c *EndpointConfigure, opts ...EndpointOption) (ret string,
 
 func OrderList(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
 	order := setEndpoint(opts)
-	baseURL := GetPath("orders", "OrderList")
+	baseURL := c.getUrl("orders", "OrderList")
 	values := url.Values{}
 	values.Add("symbol", order.Symbol)
 	values.Add("states", order.States)
 	values.Add("limit", adjustedPerPage(order))
 	values.Add("before", order.PageBefore)
 	values.Add("after", order.PageAfter)
-
 	query := values.Encode()
 	// alphabet order
 	validPayload := map[string]string{"after": order.PageAfter, "before": order.PageBefore, "limit": adjustedPerPage(order), "states": order.States, "symbol": order.Symbol}
-	ret, err = c.Get(baseURL, query, validPayload, true)
+	ret, err = apiConfig(c).Get(baseURL, query, validPayload, true)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -50,8 +51,8 @@ func OrderList(c *EndpointConfigure, opts ...EndpointOption) (ret string, err er
 
 func ReferenceOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
 	order := setEndpoint(opts)
-	url := GetPath("orders", "ReferenceOrder") + "/" + order.OrderId
-	ret, err = c.Get(url, nil, nil, true)
+	url := c.getUrl("orders", "ReferenceOrder") + "/" + order.OrderId
+	ret, err = apiConfig(c).Get(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -61,8 +62,8 @@ func ReferenceOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, e
 
 func CancelOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
 	order := setEndpoint(opts)
-	url := GetPath("orders", "CancelOrder") + "/" + order.OrderId + "/submit-cancel"
-	ret, err = c.Post(url, nil, nil, true)
+	url := c.getUrl("orders", "CancelOrder") + "/" + order.OrderId + "/submit-cancel"
+	ret, err = apiConfig(c).Post(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -72,23 +73,13 @@ func CancelOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, err 
 
 func OrderMatchResults(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
 	order := setEndpoint(opts)
-	url := GetPath("orders", "OrderMatchResults") + "/" + order.OrderId + "/match-results"
-	ret, err = c.Get(url, nil, nil, true)
+	url := c.getUrl("orders", "OrderMatchResults") + "/" + order.OrderId + "/match-results"
+	ret, err = apiConfig(c).Get(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	return
-}
-
-func validPayload(o *Endpoint) map[string]string {
-	return map[string]string{
-		"amount": o.Amount,
-		"side":   o.Side,
-		"symbol": o.Symbol,
-		"price":  o.Price,
-		"type":   o.Type,
-	}
 }
 
 func validJSONBody(values map[string][]string) (ret []byte) {

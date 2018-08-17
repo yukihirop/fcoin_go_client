@@ -3,8 +3,8 @@ package endpoint
 import "fmt"
 
 func AccountsBalance(c *EndpointConfigure) (ret string, err error) {
-	url := GetPath("accounts", "AccountsBalance")
-	ret, err = c.Get(url, nil, nil, true)
+	url := c.getUrl("accounts", "AccountsBalance")
+	ret, err = apiConfig(c).Get(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
 		return
