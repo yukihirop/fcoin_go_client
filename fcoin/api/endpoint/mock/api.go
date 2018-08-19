@@ -2,7 +2,6 @@ package mock
 
 import (
 	"fcoin_go_client/fcoin/api"
-	"fcoin_go_client/fcoin/api/endpoint"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -52,12 +51,6 @@ func NewMockAPI(cassetName string) MockAPI {
 		APIKey:     os.Getenv("FCOIN_API_KEY"),
 		SecretKey:  os.Getenv("FCOIN_SECRET_KEY"),
 	}
-}
-
-func (m *Mock) url(endPoint string, methodName string) (ret string) {
-	path := endpoint.GetPath(endPoint, methodName)
-	ret = m.endPoint + path
-	return
 }
 
 func (m *Mock) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {

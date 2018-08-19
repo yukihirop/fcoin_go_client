@@ -10,7 +10,7 @@ import (
 func (m *Mock) CreateOrderLimit(opts ...MockEndpointOption) (ret string, err error) {
 	order := setMockEndpoint(opts)
 	order.Type = "limit"
-	baseURL := m.url("orders", "CreateOrderLimit")
+	baseURL := "https://api.fcoin.com/v2/orders"
 	values := url.Values{}
 	values.Add("type", order.Type)
 	values.Add("side", order.Side)
@@ -31,7 +31,7 @@ func (m *Mock) CreateOrderLimit(opts ...MockEndpointOption) (ret string, err err
 
 func (m *Mock) OrderList(opts ...MockEndpointOption) (ret string, err error) {
 	order := setMockEndpoint(opts)
-	baseURL := m.url("orders", "OrderList")
+	baseURL := "https://api.fcoin.com/v2/orders"
 	values := url.Values{}
 	values.Add("symbol", order.Symbol)
 	values.Add("states", order.States)
@@ -52,7 +52,7 @@ func (m *Mock) OrderList(opts ...MockEndpointOption) (ret string, err error) {
 
 func (m *Mock) ReferenceOrder(opts ...MockEndpointOption) (ret string, err error) {
 	order := setMockEndpoint(opts)
-	url := m.url("orders", "ReferenceOrder") + "/" + order.OrderId
+	url := "https://api.fcoin.com/v2/orders/" + order.OrderId
 	ret, err = m.Get(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
@@ -63,7 +63,7 @@ func (m *Mock) ReferenceOrder(opts ...MockEndpointOption) (ret string, err error
 
 func (m *Mock) CancelOrder(opts ...MockEndpointOption) (ret string, err error) {
 	order := setMockEndpoint(opts)
-	url := m.url("orders", "CancelOrder") + "/" + order.OrderId + "/submit-cancel"
+	url := "https://api.fcoin.com/v2/orders/" + order.OrderId + "/submit-cancel"
 	ret, err = m.Post(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
@@ -74,7 +74,7 @@ func (m *Mock) CancelOrder(opts ...MockEndpointOption) (ret string, err error) {
 
 func (m *Mock) OrderMatchResults(opts ...MockEndpointOption) (ret string, err error) {
 	order := setMockEndpoint(opts)
-	url := m.url("orders", "OrderMatchResults") + "/" + order.OrderId + "/match-results"
+	url := "https://api.fcoin.com/v2/orders/" + order.OrderId + "/match-results"
 	ret, err = m.Get(url, nil, nil, true)
 	if err != nil {
 		fmt.Println(err)
