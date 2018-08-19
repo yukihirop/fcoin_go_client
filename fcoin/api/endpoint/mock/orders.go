@@ -7,8 +7,8 @@ import (
 	"net/url"
 )
 
-func (m *Mock) CreateOrderLimit(opts ...MockEndpointOption) (ret string, err error) {
-	order := setMockEndpoint(opts)
+func (m *Mock) CreateOrderLimit(opts ...MockParamsOption) (ret string, err error) {
+	order := setMockParams(opts)
 	order.Type = "limit"
 	baseURL := "https://api.fcoin.com/v2/orders"
 	values := url.Values{}
@@ -29,8 +29,8 @@ func (m *Mock) CreateOrderLimit(opts ...MockEndpointOption) (ret string, err err
 	return
 }
 
-func (m *Mock) OrderList(opts ...MockEndpointOption) (ret string, err error) {
-	order := setMockEndpoint(opts)
+func (m *Mock) OrderList(opts ...MockParamsOption) (ret string, err error) {
+	order := setMockParams(opts)
 	baseURL := "https://api.fcoin.com/v2/orders"
 	values := url.Values{}
 	values.Add("symbol", order.Symbol)
@@ -50,8 +50,8 @@ func (m *Mock) OrderList(opts ...MockEndpointOption) (ret string, err error) {
 	return
 }
 
-func (m *Mock) ReferenceOrder(opts ...MockEndpointOption) (ret string, err error) {
-	order := setMockEndpoint(opts)
+func (m *Mock) ReferenceOrder(opts ...MockParamsOption) (ret string, err error) {
+	order := setMockParams(opts)
 	url := "https://api.fcoin.com/v2/orders/" + order.OrderId
 	ret, err = m.Get(url, nil, nil, true)
 	if err != nil {
@@ -61,8 +61,8 @@ func (m *Mock) ReferenceOrder(opts ...MockEndpointOption) (ret string, err error
 	return
 }
 
-func (m *Mock) CancelOrder(opts ...MockEndpointOption) (ret string, err error) {
-	order := setMockEndpoint(opts)
+func (m *Mock) CancelOrder(opts ...MockParamsOption) (ret string, err error) {
+	order := setMockParams(opts)
 	url := "https://api.fcoin.com/v2/orders/" + order.OrderId + "/submit-cancel"
 	ret, err = m.Post(url, nil, nil, true)
 	if err != nil {
@@ -72,8 +72,8 @@ func (m *Mock) CancelOrder(opts ...MockEndpointOption) (ret string, err error) {
 	return
 }
 
-func (m *Mock) OrderMatchResults(opts ...MockEndpointOption) (ret string, err error) {
-	order := setMockEndpoint(opts)
+func (m *Mock) OrderMatchResults(opts ...MockParamsOption) (ret string, err error) {
+	order := setMockParams(opts)
 	url := "https://api.fcoin.com/v2/orders/" + order.OrderId + "/match-results"
 	ret, err = m.Get(url, nil, nil, true)
 	if err != nil {
@@ -92,7 +92,7 @@ func validJSONBody(values map[string][]string) (ret []byte) {
 	return
 }
 
-func adjustedPerPage(order *MockEndpoint) (ret string) {
+func adjustedPerPage(order *MockParams) (ret string) {
 	if order.PerPage != "" {
 		ret = order.PerPage
 	} else {

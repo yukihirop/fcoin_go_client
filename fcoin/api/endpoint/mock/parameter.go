@@ -2,7 +2,7 @@ package mock
 
 import "fmt"
 
-type MockEndpoint struct {
+type MockParams struct {
 	Symbol     string
 	Level      string
 	Resolution string
@@ -17,83 +17,83 @@ type MockEndpoint struct {
 	OrderId    string
 }
 
-type MockEndpointOption func(*MockEndpoint)
-type MockEndpointsOptions []MockEndpointOption
+type MockParamsOption func(*MockParams)
+type MockParamssOptions []MockParamsOption
 
-func Symbol(s string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Symbol(s string) MockParamsOption {
+	return func(e *MockParams) {
 		e.Symbol = s
 	}
 }
 
-func Level(l string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Level(l string) MockParamsOption {
+	return func(e *MockParams) {
 		e.Level = l
 	}
 }
 
-func Resolution(r string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Resolution(r string) MockParamsOption {
+	return func(e *MockParams) {
 		e.Resolution = r
 	}
 }
 
-func Side(s string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Side(s string) MockParamsOption {
+	return func(e *MockParams) {
 		e.Side = s
 	}
 }
 
-func Price(p float32) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Price(p float32) MockParamsOption {
+	return func(e *MockParams) {
 		e.Price = fmt.Sprint(p)
 	}
 }
 
-func Amount(a float32) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Amount(a float32) MockParamsOption {
+	return func(e *MockParams) {
 		e.Amount = fmt.Sprint(a)
 	}
 }
 
-func Type(t string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func Type(t string) MockParamsOption {
+	return func(e *MockParams) {
 		e.Type = t
 	}
 }
 
-func States(s string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func States(s string) MockParamsOption {
+	return func(e *MockParams) {
 		e.States = s
 	}
 }
 
-func PageBefore(pb int) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func PageBefore(pb int) MockParamsOption {
+	return func(e *MockParams) {
 		e.PageBefore = fmt.Sprint(pb)
 	}
 }
 
-func PageAfter(pa int) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func PageAfter(pa int) MockParamsOption {
+	return func(e *MockParams) {
 		e.PageAfter = fmt.Sprint(pa)
 	}
 }
 
-func PerPage(pp int) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func PerPage(pp int) MockParamsOption {
+	return func(e *MockParams) {
 		e.PerPage = fmt.Sprint(pp)
 	}
 }
 
-func OrderId(o string) MockEndpointOption {
-	return func(e *MockEndpoint) {
+func OrderId(o string) MockParamsOption {
+	return func(e *MockParams) {
 		e.OrderId = fmt.Sprint(o)
 	}
 }
 
-func setMockEndpoint(opts MockEndpointsOptions) (mo *MockEndpoint) {
-	mo = &MockEndpoint{}
+func setMockParams(opts MockParamssOptions) (mo *MockParams) {
+	mo = &MockParams{}
 	for _, opt := range opts {
 		opt(mo)
 	}

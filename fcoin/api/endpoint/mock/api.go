@@ -28,17 +28,17 @@ type MockAPI interface {
 	PublicSymbols() (string, error)
 
 	//market
-	MarketTicker(...MockEndpointOption) (string, error)
-	MarketDepth(...MockEndpointOption) (string, error)
-	MarketTrades(...MockEndpointOption) (string, error)
-	MarketCandles(...MockEndpointOption) (string, error)
+	MarketTicker(...MockParamsOption) (string, error)
+	MarketDepth(...MockParamsOption) (string, error)
+	MarketTrades(...MockParamsOption) (string, error)
+	MarketCandles(...MockParamsOption) (string, error)
 
 	//orders
-	CreateOrderLimit(...MockEndpointOption) (string, error)
-	OrderList(...MockEndpointOption) (string, error)
-	ReferenceOrder(...MockEndpointOption) (string, error)
-	CancelOrder(...MockEndpointOption) (string, error)
-	OrderMatchResults(...MockEndpointOption) (string, error)
+	CreateOrderLimit(...MockParamsOption) (string, error)
+	OrderList(...MockParamsOption) (string, error)
+	ReferenceOrder(...MockParamsOption) (string, error)
+	CancelOrder(...MockParamsOption) (string, error)
+	OrderMatchResults(...MockParamsOption) (string, error)
 
 	//accounts
 	AccountsBalance() (string, error)
