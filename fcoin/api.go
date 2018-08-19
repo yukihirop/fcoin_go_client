@@ -16,8 +16,3 @@ func newAPI(opts ...Option) (c *Configure) {
 	}
 	return
 }
-
-// getter
-func (c *Configure) GetEndPoint() string {
-	return c.Endpoint
-}

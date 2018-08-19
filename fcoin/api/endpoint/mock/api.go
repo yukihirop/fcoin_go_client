@@ -1,7 +1,6 @@
 package mock
 
 import (
-	"fcoin_go_client/fcoin"
 	"fcoin_go_client/fcoin/api"
 	"fcoin_go_client/fcoin/api/endpoint"
 	"fmt"
@@ -47,9 +46,8 @@ type MockAPI interface {
 }
 
 func NewMockAPI(cassetName string) MockAPI {
-	api := fcoin.NewAPI()
 	return &Mock{
-		endPoint:   api.GetEndPoint(),
+		endPoint:   "https://api.fcoin.com/v2/",
 		cassetName: cassetName,
 		APIKey:     os.Getenv("FCOIN_API_KEY"),
 		SecretKey:  os.Getenv("FCOIN_SECRET_KEY"),
