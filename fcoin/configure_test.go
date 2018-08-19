@@ -9,12 +9,13 @@ var _ = Describe("Configure", func() {
 	Describe("setConfig", func() {
 		c := &Configure{}
 		expected := &Configure{
-			Adapter:   "testAdapter",
-			Endpoint:  "testEndpoint",
-			UserAgent: "testUserAgent",
-			Proxy:     "testProxy",
-			ApiKey:    "testApiKey",
-			SecretKey: "testSecretKey",
+			Adapter:     "testAdapter",
+			Endpoint:    "testEndpoint",
+			WssEndpoint: "testWssEndpoint",
+			UserAgent:   "testUserAgent",
+			Proxy:       "testProxy",
+			ApiKey:      "testApiKey",
+			SecretKey:   "testSecretKey",
 		}
 		subject := c.setConfig(expected)
 		It("should be expected", func() {
@@ -26,12 +27,13 @@ var _ = Describe("Configure", func() {
 		c := &Configure{}
 		subject := c.setDefault()
 		expected := &Configure{
-			Adapter:   "adapter",
-			Endpoint:  "https://api.fcoin.com/v2/",
-			UserAgent: "Fcoin Go Client",
-			Proxy:     "",
-			ApiKey:    "fcoin public api key",
-			SecretKey: "fcoin secret api key",
+			Adapter:     "adapter",
+			Endpoint:    "https://api.fcoin.com/v2/",
+			WssEndpoint: "wss://api.fcoin.com/v2/ws",
+			UserAgent:   "Fcoin Go Client",
+			Proxy:       "",
+			ApiKey:      "fcoin public api key",
+			SecretKey:   "fcoin secret api key",
 		}
 
 		It("should be expected", func() {
