@@ -5,7 +5,7 @@ import (
 )
 
 type EndpointConfigure struct {
-	*api.APIConfigure
+	*api.Configure
 	//  The adapter that will be used to connect if none is set
 	Adapter   string
 	Endpoint  string
@@ -15,8 +15,8 @@ type EndpointConfigure struct {
 	SecretKey string
 }
 
-func apiConfig(c *EndpointConfigure) *(api.APIConfigure) {
-	var config api.APIConfigure
+func apiConfig(c *EndpointConfigure) *(api.Configure) {
+	var config api.Configure
 	config.Adapter = c.Adapter
 	config.Endpoint = c.Endpoint
 	config.UserAgent = c.UserAgent
