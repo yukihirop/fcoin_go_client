@@ -4,7 +4,7 @@ import (
 	"fcoin_go_client/fcoin/api"
 )
 
-type EndpointConfigure struct {
+type Configure struct {
 	*api.Configure
 	//  The adapter that will be used to connect if none is set
 	Adapter   string
@@ -15,7 +15,7 @@ type EndpointConfigure struct {
 	SecretKey string
 }
 
-func apiConfig(c *EndpointConfigure) *(api.Configure) {
+func apiConfig(c *Configure) *(api.Configure) {
 	var config api.Configure
 	config.Adapter = c.Adapter
 	config.Endpoint = c.Endpoint

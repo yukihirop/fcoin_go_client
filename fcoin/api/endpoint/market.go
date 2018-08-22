@@ -5,7 +5,7 @@ import (
 )
 
 //http://horie1024.hatenablog.com/entry/2014/08/25/012123
-func MarketTicker(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func MarketTicker(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	ma := setParams(opts)
 	url := c.getUrl("market", "MarketTicker") + "/" + ma.Symbol
 	ret, err = apiConfig(c).Get(url, nil, nil, false)
@@ -16,7 +16,7 @@ func MarketTicker(c *EndpointConfigure, opts ...ParamsOption) (ret string, err e
 	return
 }
 
-func MarketDepth(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func MarketDepth(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	ma := setParams(opts)
 	url := c.getUrl("market", "MarketDepth") + "/" + ma.Symbol + "/" + ma.Level
 	ret, err = apiConfig(c).Get(url, nil, nil, false)
@@ -27,7 +27,7 @@ func MarketDepth(c *EndpointConfigure, opts ...ParamsOption) (ret string, err er
 	return
 }
 
-func MarketTrades(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func MarketTrades(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	ma := setParams(opts)
 	url := c.getUrl("market", "MarketTrades") + "/" + ma.Symbol
 	ret, err = apiConfig(c).Get(url, nil, nil, false)
@@ -38,7 +38,7 @@ func MarketTrades(c *EndpointConfigure, opts ...ParamsOption) (ret string, err e
 	return
 }
 
-func MarketCandles(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func MarketCandles(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	ma := setParams(opts)
 	url := c.getUrl("market", "MarketCandles") + "/" + ma.Resolution + "/" + ma.Symbol
 	ret, err = apiConfig(c).Get(url, nil, nil, false)

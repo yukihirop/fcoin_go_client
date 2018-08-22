@@ -7,7 +7,7 @@ import (
 	"net/url"
 )
 
-func CreateOrderLimit(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func CreateOrderLimit(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	order := setParams(opts)
 	order.Type = "limit"
 	baseURL := c.getUrl("orders", "CreateOrderLimit")
@@ -29,7 +29,7 @@ func CreateOrderLimit(c *EndpointConfigure, opts ...ParamsOption) (ret string, e
 	return
 }
 
-func OrderList(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func OrderList(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	order := setParams(opts)
 	baseURL := c.getUrl("orders", "OrderList")
 	values := url.Values{}
@@ -49,7 +49,7 @@ func OrderList(c *EndpointConfigure, opts ...ParamsOption) (ret string, err erro
 	return
 }
 
-func ReferenceOrder(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func ReferenceOrder(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	order := setParams(opts)
 	url := c.getUrl("orders", "ReferenceOrder") + "/" + order.OrderId
 	ret, err = apiConfig(c).Get(url, nil, nil, true)
@@ -60,7 +60,7 @@ func ReferenceOrder(c *EndpointConfigure, opts ...ParamsOption) (ret string, err
 	return
 }
 
-func CancelOrder(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func CancelOrder(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	order := setParams(opts)
 	url := c.getUrl("orders", "CancelOrder") + "/" + order.OrderId + "/submit-cancel"
 	ret, err = apiConfig(c).Post(url, nil, nil, true)
@@ -71,7 +71,7 @@ func CancelOrder(c *EndpointConfigure, opts ...ParamsOption) (ret string, err er
 	return
 }
 
-func OrderMatchResults(c *EndpointConfigure, opts ...ParamsOption) (ret string, err error) {
+func OrderMatchResults(c *Configure, opts ...ParamsOption) (ret string, err error) {
 	order := setParams(opts)
 	url := c.getUrl("orders", "OrderMatchResults") + "/" + order.OrderId + "/match-results"
 	ret, err = apiConfig(c).Get(url, nil, nil, true)

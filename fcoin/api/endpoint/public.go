@@ -5,7 +5,7 @@ import (
 )
 
 //http://horie1024.hatenablog.com/entry/2014/08/25/012123
-func PublicServerTime(c *EndpointConfigure) (ret string, err error) {
+func PublicServerTime(c *Configure) (ret string, err error) {
 	url := c.getUrl("public", "PublicServerTime")
 	fmt.Println(url)
 	ret, err = apiConfig(c).Get(url, nil, nil, false)
@@ -16,7 +16,7 @@ func PublicServerTime(c *EndpointConfigure) (ret string, err error) {
 	return
 }
 
-func PublicCurrencies(c *EndpointConfigure) (ret string, err error) {
+func PublicCurrencies(c *Configure) (ret string, err error) {
 	url := c.getUrl("public", "PublicCurrencies")
 	ret, err = apiConfig(c).Get(url, nil, nil, false)
 	if err != nil {
@@ -26,7 +26,7 @@ func PublicCurrencies(c *EndpointConfigure) (ret string, err error) {
 	return
 }
 
-func PublicSymbols(c *EndpointConfigure) (ret string, err error) {
+func PublicSymbols(c *Configure) (ret string, err error) {
 	url := c.getUrl("public", "PublicSymbols")
 	ret, err = apiConfig(c).Get(url, nil, nil, false)
 	if err != nil {
