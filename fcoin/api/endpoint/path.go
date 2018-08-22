@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func (c *EndpointConfigure) getUrl(endPoint string, methodName string) (ret string) {
+func (c *Configure) getUrl(endPoint string, methodName string) (ret string) {
 	path := getPath(endPoint, methodName)
 	ret = c.Endpoint + path
 	return

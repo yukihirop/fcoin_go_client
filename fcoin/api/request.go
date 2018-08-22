@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (c *APIConfigure) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+func (c *Configure) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
 	ret, err = c.Request("GET", url, query, payload, isAuthorize)
 	if err != nil {
 		fmt.Println(err)
@@ -15,7 +15,7 @@ func (c *APIConfigure) Get(url string, query interface{}, payload map[string]str
 	return
 }
 
-func (c *APIConfigure) Post(url string, reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+func (c *Configure) Post(url string, reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
 	ret, err = c.Request("POST", url, reader, payload, isAuthorize)
 	if err != nil {
 		fmt.Println(err)
@@ -24,7 +24,7 @@ func (c *APIConfigure) Post(url string, reader interface{}, payload map[string]s
 	return
 }
 
-func (c *APIConfigure) Request(httpMethod string, url string, query_or_reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
+func (c *Configure) Request(httpMethod string, url string, query_or_reader interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {
 	var req *http.Request
 	switch httpMethod {
 	case "GET":
@@ -54,7 +54,7 @@ func (c *APIConfigure) Request(httpMethod string, url string, query_or_reader in
 	return
 }
 
-func (c *APIConfigure) authorize(req *http.Request, httpMethod string, url string, payload map[string]string) {
+func (c *Configure) authorize(req *http.Request, httpMethod string, url string, payload map[string]string) {
 	auth := NewAuthorization(httpMethod, url, c.ApiKey, c.SecretKey, payload)
 	originalHeaders := auth.OriginalHeaders()
 	for key, value := range originalHeaders {

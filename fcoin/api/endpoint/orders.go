@@ -7,8 +7,8 @@ import (
 	"net/url"
 )
 
-func CreateOrderLimit(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
-	order := setEndpoint(opts)
+func CreateOrderLimit(c *Configure, opts ...ParamsOption) (ret string, err error) {
+	order := setParams(opts)
 	order.Type = "limit"
 	baseURL := c.getUrl("orders", "CreateOrderLimit")
 	values := url.Values{}
@@ -29,8 +29,8 @@ func CreateOrderLimit(c *EndpointConfigure, opts ...EndpointOption) (ret string,
 	return
 }
 
-func OrderList(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
-	order := setEndpoint(opts)
+func OrderList(c *Configure, opts ...ParamsOption) (ret string, err error) {
+	order := setParams(opts)
 	baseURL := c.getUrl("orders", "OrderList")
 	values := url.Values{}
 	values.Add("symbol", order.Symbol)
@@ -49,8 +49,8 @@ func OrderList(c *EndpointConfigure, opts ...EndpointOption) (ret string, err er
 	return
 }
 
-func ReferenceOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
-	order := setEndpoint(opts)
+func ReferenceOrder(c *Configure, opts ...ParamsOption) (ret string, err error) {
+	order := setParams(opts)
 	url := c.getUrl("orders", "ReferenceOrder") + "/" + order.OrderId
 	ret, err = apiConfig(c).Get(url, nil, nil, true)
 	if err != nil {
@@ -60,8 +60,8 @@ func ReferenceOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, e
 	return
 }
 
-func CancelOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
-	order := setEndpoint(opts)
+func CancelOrder(c *Configure, opts ...ParamsOption) (ret string, err error) {
+	order := setParams(opts)
 	url := c.getUrl("orders", "CancelOrder") + "/" + order.OrderId + "/submit-cancel"
 	ret, err = apiConfig(c).Post(url, nil, nil, true)
 	if err != nil {
@@ -71,8 +71,8 @@ func CancelOrder(c *EndpointConfigure, opts ...EndpointOption) (ret string, err 
 	return
 }
 
-func OrderMatchResults(c *EndpointConfigure, opts ...EndpointOption) (ret string, err error) {
-	order := setEndpoint(opts)
+func OrderMatchResults(c *Configure, opts ...ParamsOption) (ret string, err error) {
+	order := setParams(opts)
 	url := c.getUrl("orders", "OrderMatchResults") + "/" + order.OrderId + "/match-results"
 	ret, err = apiConfig(c).Get(url, nil, nil, true)
 	if err != nil {
@@ -91,9 +91,9 @@ func validJSONBody(values map[string][]string) (ret []byte) {
 	return
 }
 
-func adjustedPerPage(order *Endpoint) (ret string) {
-	if order.PerPage != "" {
-		ret = order.PerPage
+func adjustedPerPage(pa *Params) (ret string) {
+	if pa.PerPage != "" {
+		ret = pa.PerPage
 	} else {
 		ret = "20"
 	}

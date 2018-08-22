@@ -1,9 +1,7 @@
 package mock
 
 import (
-	"fcoin_go_client/fcoin"
 	"fcoin_go_client/fcoin/api"
-	"fcoin_go_client/fcoin/api/endpoint"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -30,36 +28,29 @@ type MockAPI interface {
 	PublicSymbols() (string, error)
 
 	//market
-	MarketTicker(...MockEndpointOption) (string, error)
-	MarketDepth(...MockEndpointOption) (string, error)
-	MarketTrades(...MockEndpointOption) (string, error)
-	MarketCandles(...MockEndpointOption) (string, error)
+	MarketTicker(...MockParamsOption) (string, error)
+	MarketDepth(...MockParamsOption) (string, error)
+	MarketTrades(...MockParamsOption) (string, error)
+	MarketCandles(...MockParamsOption) (string, error)
 
 	//orders
-	CreateOrderLimit(...MockEndpointOption) (string, error)
-	OrderList(...MockEndpointOption) (string, error)
-	ReferenceOrder(...MockEndpointOption) (string, error)
-	CancelOrder(...MockEndpointOption) (string, error)
-	OrderMatchResults(...MockEndpointOption) (string, error)
+	CreateOrderLimit(...MockParamsOption) (string, error)
+	OrderList(...MockParamsOption) (string, error)
+	ReferenceOrder(...MockParamsOption) (string, error)
+	CancelOrder(...MockParamsOption) (string, error)
+	OrderMatchResults(...MockParamsOption) (string, error)
 
 	//accounts
 	AccountsBalance() (string, error)
 }
 
 func NewMockAPI(cassetName string) MockAPI {
-	api := fcoin.NewAPI()
 	return &Mock{
-		endPoint:   api.GetEndPoint(),
+		endPoint:   "https://api.fcoin.com/v2/",
 		cassetName: cassetName,
 		APIKey:     os.Getenv("FCOIN_API_KEY"),
 		SecretKey:  os.Getenv("FCOIN_SECRET_KEY"),
 	}
-}
-
-func (m *Mock) url(endPoint string, methodName string) (ret string) {
-	path := endpoint.GetPath(endPoint, methodName)
-	ret = m.endPoint + path
-	return
 }
 
 func (m *Mock) Get(url string, query interface{}, payload map[string]string, isAuthorize bool) (ret string, err error) {

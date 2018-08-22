@@ -85,8 +85,8 @@ func (c *Configure) setDefault() *Configure {
 	return c
 }
 
-func endpointConfig(c *Configure) *(endpoint.EndpointConfigure) {
-	var config endpoint.EndpointConfigure
+func endpointConfig(c *Configure) *(endpoint.Configure) {
+	var config endpoint.Configure
 	config.Adapter = c.Adapter
 	config.Endpoint = c.Endpoint
 	config.UserAgent = c.UserAgent
