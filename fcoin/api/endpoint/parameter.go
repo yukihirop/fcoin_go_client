@@ -2,7 +2,7 @@ package endpoint
 
 import "fmt"
 
-type Endpoint struct {
+type Params struct {
 	Symbol     string
 	Level      string
 	Resolution string
@@ -17,85 +17,85 @@ type Endpoint struct {
 	OrderId    string
 }
 
-type EndpointOption func(*Endpoint)
-type EndpointsOptions []EndpointOption
+type ParamsOption func(*Params)
+type ParamsOptions []ParamsOption
 
-func Symbol(s string) EndpointOption {
-	return func(e *Endpoint) {
-		e.Symbol = s
+func Symbol(s string) ParamsOption {
+	return func(pa *Params) {
+		pa.Symbol = s
 	}
 }
 
-func Level(l string) EndpointOption {
-	return func(e *Endpoint) {
-		e.Level = l
+func Level(l string) ParamsOption {
+	return func(pa *Params) {
+		pa.Level = l
 	}
 }
 
-func Resolution(r string) EndpointOption {
-	return func(e *Endpoint) {
-		e.Resolution = r
+func Resolution(r string) ParamsOption {
+	return func(pa *Params) {
+		pa.Resolution = r
 	}
 }
 
-func Side(s string) EndpointOption {
-	return func(e *Endpoint) {
-		e.Side = s
+func Side(s string) ParamsOption {
+	return func(pa *Params) {
+		pa.Side = s
 	}
 }
 
-func Price(p float32) EndpointOption {
-	return func(e *Endpoint) {
-		e.Price = fmt.Sprint(p)
+func Price(p float32) ParamsOption {
+	return func(pa *Params) {
+		pa.Price = fmt.Sprint(p)
 	}
 }
 
-func Amount(a float32) EndpointOption {
-	return func(e *Endpoint) {
-		e.Amount = fmt.Sprint(a)
+func Amount(a float32) ParamsOption {
+	return func(pa *Params) {
+		pa.Amount = fmt.Sprint(a)
 	}
 }
 
-func Type(t string) EndpointOption {
-	return func(e *Endpoint) {
-		e.Type = t
+func Type(t string) ParamsOption {
+	return func(pa *Params) {
+		pa.Type = t
 	}
 }
 
-func States(s string) EndpointOption {
-	return func(e *Endpoint) {
-		e.States = s
+func States(s string) ParamsOption {
+	return func(pa *Params) {
+		pa.States = s
 	}
 }
 
-func PageBefore(pb int) EndpointOption {
-	return func(e *Endpoint) {
-		e.PageBefore = fmt.Sprint(pb)
+func PageBefore(pb int) ParamsOption {
+	return func(pa *Params) {
+		pa.PageBefore = fmt.Sprint(pb)
 	}
 }
 
-func PageAfter(pa int) EndpointOption {
-	return func(e *Endpoint) {
-		e.PageAfter = fmt.Sprint(pa)
+func PageAfter(paa int) ParamsOption {
+	return func(pa *Params) {
+		pa.PageAfter = fmt.Sprint(paa)
 	}
 }
 
-func PerPage(pp int) EndpointOption {
-	return func(e *Endpoint) {
-		e.PerPage = fmt.Sprint(pp)
+func PerPage(pp int) ParamsOption {
+	return func(pa *Params) {
+		pa.PerPage = fmt.Sprint(pp)
 	}
 }
 
-func OrderId(o string) EndpointOption {
-	return func(e *Endpoint) {
-		e.OrderId = o
+func OrderId(o string) ParamsOption {
+	return func(pa *Params) {
+		pa.OrderId = o
 	}
 }
 
-func setEndpoint(opts EndpointsOptions) (ma *Endpoint) {
-	ma = &Endpoint{}
+func setParams(opts ParamsOptions) (pa *Params) {
+	pa = &Params{}
 	for _, opt := range opts {
-		opt(ma)
+		opt(pa)
 	}
 	return
 }
