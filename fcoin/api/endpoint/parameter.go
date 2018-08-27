@@ -1,20 +1,29 @@
 package endpoint
 
-import "fmt"
+import (
+	"fcoin_go_client/fcoin/config"
+	"fmt"
+
+	"github.com/spf13/viper"
+)
 
 type Params struct {
 	Symbol     string
 	Level      string
 	Resolution string
 	Side       string
-	Price      string
-	Amount     string
+	Price      float64
+	Amount     float64
+	Total      float64
 	Type       string
 	States     string
 	PageBefore string
 	PageAfter  string
 	PerPage    string
 	OrderId    string
+	MethodName string
+
+	VSetting *config.ValidationSetting
 }
 
 type ParamsOption func(*Params)
@@ -44,15 +53,21 @@ func Side(s string) ParamsOption {
 	}
 }
 
-func Price(p float32) ParamsOption {
+func Price(p float64) ParamsOption {
 	return func(pa *Params) {
-		pa.Price = fmt.Sprint(p)
+		pa.Price = p
 	}
 }
 
-func Amount(a float32) ParamsOption {
+func Amount(a float64) ParamsOption {
 	return func(pa *Params) {
-		pa.Amount = fmt.Sprint(a)
+		pa.Amount = a
+	}
+}
+
+func Total(t float64) ParamsOption {
+	return func(pa *Params) {
+		pa.Total = t
 	}
 }
 
@@ -89,6 +104,21 @@ func PerPage(pp int) ParamsOption {
 func OrderId(o string) ParamsOption {
 	return func(pa *Params) {
 		pa.OrderId = o
+	}
+}
+
+func MethodName(m string) ParamsOption {
+	return func(pa *Params) {
+		pa.MethodName = m
+	}
+}
+
+func VSetting(fixedViper, customViper *viper.Viper, customSettingPath interface{}) ParamsOption {
+	return func(pa *Params) {
+		pa.VSetting = new(config.ValidationSetting)
+		pa.VSetting.FixedViper = fixedViper
+		pa.VSetting.CustomViper = customViper
+		pa.VSetting.CustomSettingPath = customSettingPath
 	}
 }
 
