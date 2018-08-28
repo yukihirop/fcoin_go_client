@@ -2,6 +2,7 @@ package validator
 
 import (
 	"fcoin_go_client/fcoin/api/endpoint/validator/orders"
+	"fcoin_go_client/fcoin/config"
 )
 
 type OrderParams struct {
@@ -15,68 +16,74 @@ func NewOrdersValidator(opts ...ParamsOption) (ret *OrderParams) {
 	return
 }
 
-func (pa *OrderParams) IsValid() (ret bool) {
-	switch pa.params.MethodName {
+func (op *OrderParams) IsValid() (ret bool) {
+	pa := op.params
+	ordersParams := ordersParams(pa)
+	switch pa.MethodName {
 	case "CreateOrderLimit":
-		ret = pa.createOrderLimitValidator().IsValid()
+		ret = createOrderLimitValidator(ordersParams).IsValid()
 	case "CreateOrderMarket":
-		ret = pa.createOrderMarketValidator().IsValid()
+		ret = createOrderMarketValidator(ordersParams).IsValid()
 	case "OrderList":
-		ret = pa.orderListValidator().IsValid()
+		ret = orderListValidator(ordersParams).IsValid()
 	}
 	return
 }
 
-func (pa *OrderParams) Messages() (ret map[string]string) {
-	if pa.IsValid() {
+func (op *OrderParams) Messages() (ret map[string]string) {
+	pa := op.params
+	ordersParams := ordersParams(pa)
+	if op.IsValid() {
 		ret = map[string]string{}
 	}
-	switch pa.params.MethodName {
+	switch pa.MethodName {
 	case "CreateOrderLimit":
-		ret = pa.createOrderLimitValidator().Messages()
+		ret = createOrderLimitValidator(ordersParams).Messages()
 	case "CreateOrderMarket":
-		ret = pa.createOrderMarketValidator().Messages()
+		ret = createOrderMarketValidator(ordersParams).Messages()
 	case "OrderList":
-		ret = pa.orderListValidator().Messages()
+		ret = orderListValidator(ordersParams).Messages()
 	}
 	return
 
 }
 
-func (pa *OrderParams) createOrderLimitValidator() (ret *orders.CreateOrderLimitParams) {
-	symbol := orders.Symbol(pa.params.Symbol)
-	side := orders.Side(pa.params.Side)
-	price := orders.Price(pa.params.Price)
-	amount := orders.Amount(pa.params.Amount)
-	fixedViper := pa.params.VSetting.FixedViper
-	customViper := pa.params.VSetting.CustomViper
-	customSettingPath := pa.params.VSetting.CustomSettingPath
-	vsetting := orders.VSetting(fixedViper, customViper, customSettingPath)
+func createOrderLimitValidator(op *orders.Params) (ret *orders.CreateOrderLimitParams) {
+	symbol := orders.Symbol(op.Symbol)
+	side := orders.Side(op.Side)
+	price := orders.Price(op.Price)
+	amount := orders.Amount(op.Amount)
+	vsetting := vsetting(op)
 	ret = orders.NewCreateOrderLimitValidator(symbol, side, price, amount, vsetting)
 	return
 }
 
-func (pa *OrderParams) createOrderMarketValidator() (ret *orders.CreateOrderMarketParams) {
-	symbol := orders.Symbol(pa.params.Symbol)
-	side := orders.Side(pa.params.Side)
-	price := orders.Price(pa.params.Price)
-	amount := orders.Amount(pa.params.Amount)
-	total := orders.Total(pa.params.Total)
-	fixedViper := pa.params.VSetting.FixedViper
-	customViper := pa.params.VSetting.CustomViper
-	customSettingPath := pa.params.VSetting.CustomSettingPath
-	vsetting := orders.VSetting(fixedViper, customViper, customSettingPath)
+func createOrderMarketValidator(op *orders.Params) (ret *orders.CreateOrderMarketParams) {
+	symbol := orders.Symbol(op.Symbol)
+	side := orders.Side(op.Side)
+	price := orders.Price(op.Price)
+	amount := orders.Amount(op.Amount)
+	total := orders.Total(op.Total)
+	vsetting := vsetting(op)
 	ret = orders.NewCreateOrderMarketValidator(symbol, side, price, amount, total, vsetting)
 	return
 }
 
-func (pa *OrderParams) orderListValidator() (ret *orders.OrderListParams) {
-	symbol := orders.Symbol(pa.params.Symbol)
-	states := orders.States(pa.params.States)
-	fixedViper := pa.params.VSetting.FixedViper
-	customViper := pa.params.VSetting.CustomViper
-	customSettingPath := pa.params.VSetting.CustomSettingPath
-	vsetting := orders.VSetting(fixedViper, customViper, customSettingPath)
+func orderListValidator(op *orders.Params) (ret *orders.OrderListParams) {
+	symbol := orders.Symbol(op.Symbol)
+	states := orders.States(op.States)
+	vsetting := vsetting(op)
 	ret = orders.NewOrderListValidator(symbol, states, vsetting)
 	return
+}
+
+func vsetting(op *orders.Params) orders.ParamsOption {
+	fixedViper := delegateVSetting(op).FixedViper
+	customViper := delegateVSetting(op).CustomViper
+	customSettingPath := delegateVSetting(op).CustomSettingPath
+	return orders.VSetting(fixedViper, customViper, customSettingPath)
+}
+
+func delegateVSetting(op *orders.Params) *config.ValidationSetting {
+	return op.VSetting
 }

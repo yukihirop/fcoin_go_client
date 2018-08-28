@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"fcoin_go_client/fcoin/api/endpoint/validator/orders"
 	"fcoin_go_client/fcoin/config"
 
 	"github.com/spf13/viper"
@@ -91,6 +92,20 @@ func VSetting(fixedViper, customViper *viper.Viper, customSettingPath interface{
 		pa.VSetting.CustomViper = customViper
 		pa.VSetting.CustomSettingPath = customSettingPath
 	}
+}
+
+func ordersParams(pa *Params) *orders.Params {
+	var params orders.Params
+	params.Symbol = pa.Symbol
+	params.Level = pa.Level
+	params.Resolution = pa.Resolution
+	params.Side = pa.Side
+	params.Amount = pa.Amount
+	params.Total = pa.Total
+	params.Type = pa.Type
+	params.States = pa.States
+	params.VSetting = pa.VSetting
+	return &params
 }
 
 func setParams(opts ParamsOptions) (pa *Params) {

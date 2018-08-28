@@ -11,65 +11,71 @@ func NewMarketValidator(opts ...ParamsOption) (ret *MarketParams) {
 	return
 }
 
-func (pa *MarketParams) IsValid() (ret bool) {
-	if !pa.isValidSymbol() {
+func (mp *MarketParams) IsValid() (ret bool) {
+	pa := mp.params
+	if !mp.isValidSymbol() {
 		ret = false
 		return
 	}
-	switch pa.params.MethodName {
+	switch pa.MethodName {
 	case "MarketDepth":
-		ret = pa.isValidLevel()
+		ret = mp.isValidLevel()
 	case "MarketCandles":
-		ret = pa.isValidResolution()
+		ret = mp.isValidResolution()
 	}
 	return
 }
 
-func (pa *MarketParams) Messages() (ret map[string]string) {
-	if pa.IsValid() {
+func (mp *MarketParams) Messages() (ret map[string]string) {
+	pa := mp.params
+	if mp.IsValid() {
 		ret = map[string]string{}
 	}
 	var results []map[string]string
 
-	if !pa.isValidSymbol() {
-		results = append(results, presenceErrorMessage(pa.params.Symbol, "symbol"))
+	if !mp.isValidSymbol() {
+		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
 	}
 
-	switch pa.params.MethodName {
+	switch pa.MethodName {
 	case "MarketDepth":
 
-		if !pa.isValidLevel() {
-			results = append(results, includesErrorMessage(pa.params.Level, "level", pa.validLevels()))
+		if !mp.isValidLevel() {
+			results = append(results, includesErrorMessage(pa.Level, "level", mp.validLevels()))
 		}
 	case "MarketCandles":
-		if !pa.isValidResolution() {
-			results = append(results, includesErrorMessage(pa.params.Resolution, "resolution", pa.validResolutions()))
+		if !mp.isValidResolution() {
+			results = append(results, includesErrorMessage(pa.Resolution, "resolution", mp.validResolutions()))
 		}
 	}
 	ret = slice2map(results)
 	return
 }
 
-func (pa *MarketParams) isValidSymbol() (ret bool) {
+func (mp *MarketParams) isValidSymbol() (ret bool) {
+	pa := mp.params
 	ret = false
-	if pa.params.Symbol != "" {
+	if pa.Symbol != "" {
 		ret = true
 	}
 	return
 }
 
-func (pa *MarketParams) isValidLevel() (ret bool) {
-	ret = contains(pa.validLevels(), pa.params.Level)
+func (mp *MarketParams) isValidLevel() (ret bool) {
+	pa := mp.params
+	ret = contains(mp.validLevels(), pa.Level)
 	return
 }
 
-func (pa *MarketParams) isValidResolution() (ret bool) {
-	ret = contains(pa.validResolutions(), pa.params.Resolution)
+func (mp *MarketParams) isValidResolution() (ret bool) {
+	pa := mp.params
+	ret = contains(mp.validResolutions(), pa.Resolution)
 	return
 }
 
-func (pa *MarketParams) validLevels() (ret []string) {
-	levels := pa.params.VSetting.FixedViper.Get("fcoin.validation.params.level").([]interface{})
+func (mp *MarketParams) validLevels() (ret []string) {
+	pa := mp.params
+	levels := pa.VSetting.FixedViper.Get("fcoin.validation.params.level").([]interface{})
 	for _, level := range levels {
 		alevel, _ := level.(string)
 		ret = append(ret, alevel)
@@ -77,8 +83,9 @@ func (pa *MarketParams) validLevels() (ret []string) {
 	return
 }
 
-func (pa *MarketParams) validResolutions() (ret []string) {
-	resolutions := pa.params.VSetting.FixedViper.Get("fcoin.validation.params.resolution").([]interface{})
+func (mp *MarketParams) validResolutions() (ret []string) {
+	pa := mp.params
+	resolutions := pa.VSetting.FixedViper.Get("fcoin.validation.params.resolution").([]interface{})
 	for _, resolution := range resolutions {
 		aresolution, _ := resolution.(string)
 		ret = append(ret, aresolution)
