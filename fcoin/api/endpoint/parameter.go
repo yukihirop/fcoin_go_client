@@ -1,6 +1,7 @@
 package endpoint
 
 import (
+	"fcoin_go_client/fcoin/api/endpoint/validator"
 	"fcoin_go_client/fcoin/config"
 	"fmt"
 
@@ -120,6 +121,21 @@ func VSetting(fixedViper, customViper *viper.Viper, customSettingPath interface{
 		pa.VSetting.CustomViper = customViper
 		pa.VSetting.CustomSettingPath = customSettingPath
 	}
+}
+
+func validatorParams(pa *Params) *validator.Params {
+	var params validator.Params
+	params.Symbol = pa.Symbol
+	params.Level = pa.Level
+	params.Resolution = pa.Resolution
+	params.Side = pa.Side
+	params.Amount = pa.Amount
+	params.Total = pa.Total
+	params.Type = pa.Type
+	params.States = pa.States
+	params.MethodName = pa.MethodName
+	params.VSetting = pa.VSetting
+	return &params
 }
 
 func setParams(opts ParamsOptions) (pa *Params) {

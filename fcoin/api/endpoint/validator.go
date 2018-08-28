@@ -2,6 +2,7 @@ package endpoint
 
 import (
 	"fcoin_go_client/fcoin/api/endpoint/validator"
+	"fcoin_go_client/fcoin/config"
 )
 
 type Validator interface {
@@ -20,25 +21,27 @@ func NewValidator(opts ...ParamsOption) (ret *ValidatorParams) {
 	return
 }
 
-func (pa *ValidatorParams) IsValid() (ret bool) {
+func (vp *ValidatorParams) IsValid() (ret bool) {
+	pa := vp.params
 	switch {
-	case pa.isMarket():
-		ret = pa.marketValidator().IsValid()
-	case pa.isOrders():
-		ret = pa.ordersValidator().IsValid()
+	case vp.isMarket():
+		ret = marketValidator(pa).IsValid()
+	case vp.isOrders():
+		ret = ordersValidator(pa).IsValid()
 	}
 	return
 }
 
-func (pa *ValidatorParams) Messages() (ret map[string]string) {
-	if pa.IsValid() {
+func (vp *ValidatorParams) Messages() (ret map[string]string) {
+	pa := vp.params
+	if vp.IsValid() {
 		ret = map[string]string{}
 	}
 	switch {
-	case pa.isMarket():
-		ret = pa.marketValidator().Messages()
-	case pa.isOrders():
-		ret = pa.ordersValidator().Messages()
+	case vp.isMarket():
+		ret = marketValidator(pa).Messages()
+	case vp.isOrders():
+		ret = ordersValidator(pa).Messages()
 	}
 	return
 }
@@ -53,31 +56,27 @@ func (pa *ValidatorParams) isOrders() (ret bool) {
 	return
 }
 
-func (pa *ValidatorParams) marketValidator() (ret *validator.MarketParams) {
-	symbol := validator.Symbol(pa.params.Symbol)
-	level := validator.Level(pa.params.Level)
-	resolution := validator.Level(pa.params.Resolution)
-	methodName := validator.MethodName(pa.params.MethodName)
-	fixedViper := pa.params.VSetting.FixedViper
-	customViper := pa.params.VSetting.CustomViper
-	customSettingPath := pa.params.VSetting.CustomSettingPath
-	vsetting := validator.VSetting(fixedViper, customViper, customSettingPath)
+func marketValidator(pa *Params) (ret *validator.MarketParams) {
+	vp := validatorParams(pa)
+	symbol := validator.Symbol(vp.Symbol)
+	level := validator.Level(vp.Level)
+	resolution := validator.Resolution(vp.Resolution)
+	methodName := validator.MethodName(vp.MethodName)
+	vsetting := vsetting(vp)
 	ret = validator.NewMarketValidator(symbol, level, resolution, methodName, vsetting)
 	return
 }
 
-func (pa *ValidatorParams) ordersValidator() (ret *validator.OrderParams) {
-	symbol := validator.Symbol(pa.params.Symbol)
-	side := validator.Side(pa.params.Side)
-	price := validator.Price(pa.params.Price)
-	amount := validator.Amount(pa.params.Amount)
-	total := validator.Total(pa.params.Total)
-	states := validator.States(pa.params.States)
-	methodName := validator.MethodName(pa.params.MethodName)
-	fixedViper := pa.params.VSetting.FixedViper
-	customViper := pa.params.VSetting.CustomViper
-	customSettingPath := pa.params.VSetting.CustomSettingPath
-	vsetting := validator.VSetting(fixedViper, customViper, customSettingPath)
+func ordersValidator(pa *Params) (ret *validator.OrderParams) {
+	vp := validatorParams(pa)
+	symbol := validator.Symbol(vp.Symbol)
+	side := validator.Side(vp.Side)
+	price := validator.Price(vp.Price)
+	amount := validator.Amount(vp.Amount)
+	total := validator.Total(vp.Total)
+	states := validator.States(vp.States)
+	methodName := validator.MethodName(vp.MethodName)
+	vsetting := vsetting(vp)
 	ret = validator.NewOrdersValidator(symbol, side, price, amount, total, states, methodName, vsetting)
 	return
 }
@@ -89,5 +88,17 @@ func contains(s []string, e string) (ret bool) {
 			ret = true
 		}
 	}
+	return
+}
+
+func vsetting(vp *validator.Params) validator.ParamsOption {
+	fixedViper := delegateVSetting(vp).FixedViper
+	customViper := delegateVSetting(vp).CustomViper
+	customSettingPath := delegateVSetting(vp).CustomSettingPath
+	return validator.VSetting(fixedViper, customViper, customSettingPath)
+}
+
+func delegateVSetting(vp *validator.Params) (ret *config.ValidationSetting) {
+	ret = vp.VSetting
 	return
 }
