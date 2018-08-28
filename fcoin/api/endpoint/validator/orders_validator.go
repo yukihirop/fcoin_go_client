@@ -18,69 +18,71 @@ func NewOrdersValidator(opts ...ParamsOption) (ret *OrderParams) {
 
 func (op *OrderParams) IsValid() (ret bool) {
 	pa := op.params
-	ordersParams := ordersParams(pa)
 	switch pa.MethodName {
 	case "CreateOrderLimit":
-		ret = createOrderLimitValidator(ordersParams).IsValid()
+		ret = createOrderLimitValidator(op).IsValid()
 	case "CreateOrderMarket":
-		ret = createOrderMarketValidator(ordersParams).IsValid()
+		ret = createOrderMarketValidator(op).IsValid()
 	case "OrderList":
-		ret = orderListValidator(ordersParams).IsValid()
+		ret = orderListValidator(op).IsValid()
 	}
 	return
 }
 
 func (op *OrderParams) Messages() (ret map[string]string) {
 	pa := op.params
-	ordersParams := ordersParams(pa)
 	if op.IsValid() {
 		ret = map[string]string{}
 	}
 	switch pa.MethodName {
 	case "CreateOrderLimit":
-		ret = createOrderLimitValidator(ordersParams).Messages()
+		ret = createOrderLimitValidator(op).Messages()
 	case "CreateOrderMarket":
-		ret = createOrderMarketValidator(ordersParams).Messages()
+		ret = createOrderMarketValidator(op).Messages()
 	case "OrderList":
-		ret = orderListValidator(ordersParams).Messages()
+		ret = orderListValidator(op).Messages()
 	}
 	return
 
 }
 
-func createOrderLimitValidator(op *orders.Params) (ret *orders.CreateOrderLimitParams) {
-	symbol := orders.Symbol(op.Symbol)
-	side := orders.Side(op.Side)
-	price := orders.Price(op.Price)
-	amount := orders.Amount(op.Amount)
+func createOrderLimitValidator(op *OrderParams) (ret *orders.CreateOrderLimitParams) {
+	ordersParams := ordersParams(op.params)
+	symbol := orders.Symbol(ordersParams.Symbol)
+	side := orders.Side(ordersParams.Side)
+	price := orders.Price(ordersParams.Price)
+	amount := orders.Amount(ordersParams.Amount)
 	vsetting := vsetting(op)
 	ret = orders.NewCreateOrderLimitValidator(symbol, side, price, amount, vsetting)
 	return
 }
 
-func createOrderMarketValidator(op *orders.Params) (ret *orders.CreateOrderMarketParams) {
-	symbol := orders.Symbol(op.Symbol)
-	side := orders.Side(op.Side)
-	price := orders.Price(op.Price)
-	amount := orders.Amount(op.Amount)
-	total := orders.Total(op.Total)
+func createOrderMarketValidator(op *OrderParams) (ret *orders.CreateOrderMarketParams) {
+	ordersParams := ordersParams(op.params)
+	symbol := orders.Symbol(ordersParams.Symbol)
+	side := orders.Side(ordersParams.Side)
+	price := orders.Price(ordersParams.Price)
+	amount := orders.Amount(ordersParams.Amount)
+	total := orders.Total(ordersParams.Total)
 	vsetting := vsetting(op)
 	ret = orders.NewCreateOrderMarketValidator(symbol, side, price, amount, total, vsetting)
 	return
 }
 
-func orderListValidator(op *orders.Params) (ret *orders.OrderListParams) {
-	symbol := orders.Symbol(op.Symbol)
-	states := orders.States(op.States)
+func orderListValidator(op *OrderParams) (ret *orders.OrderListParams) {
+	ordersParams := ordersParams(op.params)
+	symbol := orders.Symbol(ordersParams.Symbol)
+	states := orders.States(ordersParams.States)
 	vsetting := vsetting(op)
 	ret = orders.NewOrderListValidator(symbol, states, vsetting)
 	return
 }
 
-func vsetting(op *orders.Params) orders.ParamsOption {
-	fixedViper := delegateVSetting(op).FixedViper
-	customViper := delegateVSetting(op).CustomViper
-	customSettingPath := delegateVSetting(op).CustomSettingPath
+func vsetting(op *OrderParams) orders.ParamsOption {
+	ordersParams := ordersParams(op.params)
+	fixedViper := delegateVSetting(ordersParams).FixedViper
+	customViper := delegateVSetting(ordersParams).CustomViper
+	customSettingPath := delegateVSetting(ordersParams).CustomSettingPath
 	return orders.VSetting(fixedViper, customViper, customSettingPath)
 }
 
