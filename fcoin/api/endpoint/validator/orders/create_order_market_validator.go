@@ -21,45 +21,47 @@ func NewCreateOrderMarketValidator(opts ...ParamsOption) (ret *CreateOrderMarket
 	return
 }
 
-func (pa *CreateOrderMarketParams) IsValid() (ret bool) {
+func (comp *CreateOrderMarketParams) IsValid() (ret bool) {
+	pa := comp.params
 	switch {
-	case pa.params.isValidSymbolSettingExist():
+	case pa.isValidSymbolSettingExist():
 		switch {
-		case pa.params.isSell():
-			ret = pa.params.isValidAmount()
-		case pa.params.isBuy():
-			ret = pa.params.isValidTotal()
+		case pa.isSell():
+			ret = pa.isValidAmount()
+		case pa.isBuy():
+			ret = pa.isValidTotal()
 		}
-	case pa.isInvalidSymbolSettingExist():
+	case comp.isInvalidSymbolSettingExist():
 		ret = false
 	default:
-		ret = pa.params.isValidSymbol() && pa.params.isValidSide()
+		ret = pa.isValidSymbol() && pa.isValidSide()
 	}
 	return
 }
 
-func (pa *CreateOrderMarketParams) Messages() (ret map[string]string) {
-	if pa.IsValid() {
+func (comp *CreateOrderMarketParams) Messages() (ret map[string]string) {
+	pa := comp.params
+	if comp.IsValid() {
 		ret = map[string]string{}
 	}
 
 	var results []map[string]string
 	switch {
-	case !pa.params.isValidSymbol():
-		results = append(results, presenceErrorMessage(pa.params.Symbol, "symbol"))
-	case pa.params.isValidSymbolSettingExist():
+	case !pa.isValidSymbol():
+		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+	case pa.isValidSymbolSettingExist():
 		switch {
-		case pa.params.isSell():
-			if !pa.params.isValidAmount() {
-				results = append(results, betweenErrorMessage(pa.params.Amount, "amount", pa.params.min("amount"), pa.params.max("amount")))
+		case pa.isSell():
+			if !pa.isValidAmount() {
+				results = append(results, betweenErrorMessage(pa.Amount, "amount", pa.min("amount"), pa.max("amount")))
 			}
-		case pa.params.isBuy():
-			if !pa.params.isValidTotal() {
-				results = append(results, betweenErrorMessage(pa.params.Total, "total", pa.params.min("total"), pa.params.max("total")))
+		case pa.isBuy():
+			if !pa.isValidTotal() {
+				results = append(results, betweenErrorMessage(pa.Total, "total", pa.min("total"), pa.max("total")))
 			}
 		}
-	case pa.isInvalidSymbolSettingExist():
-		results = append(results, invalidCreateOrderMarketErrorMessage(pa.params.Symbol, "symbol"))
+	case comp.isInvalidSymbolSettingExist():
+		results = append(results, invalidCreateOrderMarketErrorMessage(pa.Symbol, "symbol"))
 	}
 	ret = slice2map(results)
 	return
@@ -77,11 +79,12 @@ func invalidCreateOrderMarketErrorMessage(target interface{}, targetType string)
 	return
 }
 
-func (pa *CreateOrderMarketParams) isInvalidSymbolSettingExist() (ret bool) {
+func (comp *CreateOrderMarketParams) isInvalidSymbolSettingExist() (ret bool) {
+	pa := comp.params
 	ret = false
-	symbols := pa.params.invalidSymbols().symbols
+	symbols := pa.invalidSymbols().symbols
 	for _, symbol := range symbols {
-		if symbol == pa.params.Symbol {
+		if symbol == pa.Symbol {
 			ret = true
 		}
 	}

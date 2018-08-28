@@ -18,32 +18,34 @@ func NewCreateOrderLimitValidator(opts ...ParamsOption) (ret *CreateOrderLimitPa
 	return
 }
 
-func (pa *CreateOrderLimitParams) IsValid() (ret bool) {
-	if pa.params.isValidSymbolSettingExist() {
-		ret = pa.params.isValidPrice() && pa.params.isValidAmount()
+func (colp *CreateOrderLimitParams) IsValid() (ret bool) {
+	pa := colp.params
+	if pa.isValidSymbolSettingExist() {
+		ret = pa.isValidPrice() && pa.isValidAmount()
 	} else {
-		ret = pa.params.isValidSymbol() && pa.params.isValidSide()
+		ret = pa.isValidSymbol() && pa.isValidSide()
 	}
 	return
 }
 
-func (pa *CreateOrderLimitParams) Messages() (ret map[string]string) {
-	if pa.IsValid() {
+func (colp *CreateOrderLimitParams) Messages() (ret map[string]string) {
+	pa := colp.params
+	if colp.IsValid() {
 		ret = map[string]string{}
 	}
 
 	var results []map[string]string
 	switch {
-	case !pa.params.isValidSymbol():
-		results = append(results, presenceErrorMessage(pa.params.Symbol, "symbol"))
-	case !pa.params.isValidSide():
-		results = append(results, includesErrorMessage(pa.params.Side, "side", pa.params.validSides()))
-	case pa.params.isValidSymbolSettingExist():
-		if !pa.params.isValidPrice() {
-			results = append(results, betweenErrorMessage(pa.params.Price, "price", pa.params.min("price"), pa.params.max("price")))
+	case !pa.isValidSymbol():
+		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+	case !pa.isValidSide():
+		results = append(results, includesErrorMessage(pa.Side, "side", pa.validSides()))
+	case pa.isValidSymbolSettingExist():
+		if !pa.isValidPrice() {
+			results = append(results, betweenErrorMessage(pa.Price, "price", pa.min("price"), pa.max("price")))
 		}
-		if !pa.params.isValidAmount() {
-			results = append(results, betweenErrorMessage(pa.params.Amount, "amount", pa.params.min("amount"), pa.params.max("amount")))
+		if !pa.isValidAmount() {
+			results = append(results, betweenErrorMessage(pa.Amount, "amount", pa.min("amount"), pa.max("amount")))
 		}
 	}
 	ret = slice2map(results)

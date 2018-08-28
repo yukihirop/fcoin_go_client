@@ -17,21 +17,23 @@ func NewOrderListValidator(opts ...ParamsOption) (ret *OrderListParams) {
 	return
 }
 
-func (pa *OrderListParams) IsValid() (ret bool) {
-	ret = pa.params.isValidSymbol() && pa.params.isValidStates()
+func (olp *OrderListParams) IsValid() (ret bool) {
+	pa := olp.params
+	ret = pa.isValidSymbol() && pa.isValidStates()
 	return
 }
 
-func (pa *OrderListParams) Messages() (ret map[string]string) {
-	if pa.IsValid() {
+func (olp *OrderListParams) Messages() (ret map[string]string) {
+	pa := olp.params
+	if olp.IsValid() {
 		ret = map[string]string{}
 	}
 	var results []map[string]string
 	switch {
-	case !pa.params.isValidSymbol():
-		results = append(results, presenceErrorMessage(pa.params.Symbol, "symbol"))
-	case !pa.params.isValidStates():
-		results = append(results, includesErrorMessage(pa.params.States, "states", pa.params.validStates()))
+	case !pa.isValidSymbol():
+		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+	case !pa.isValidStates():
+		results = append(results, includesErrorMessage(pa.States, "states", pa.validStates()))
 	}
 	ret = slice2map(results)
 	return
