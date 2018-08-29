@@ -7,7 +7,7 @@ import (
 
 type Validator interface {
 	IsValid() bool
-	Messages() map[string]string
+	Messages() []error
 }
 
 type ValidatorParams struct {
@@ -32,10 +32,11 @@ func (vp *ValidatorParams) IsValid() (ret bool) {
 	return
 }
 
-func (vp *ValidatorParams) Messages() (ret map[string]string) {
+func (vp *ValidatorParams) Messages() (ret []error) {
 	pa := vp.params
+	ret = []error{}
 	if vp.IsValid() {
-		ret = map[string]string{}
+		return
 	}
 	switch {
 	case vp.isMarket():

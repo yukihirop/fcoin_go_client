@@ -1,6 +1,7 @@
 package endpoint_test
 
 import (
+	"errors"
 	"fcoin_go_client/fcoin/api/endpoint"
 
 	. "github.com/onsi/ginkgo"
@@ -63,9 +64,9 @@ var _ = Describe("Validator", func() {
 			subject := validator.Messages()
 
 			It("should return error message", func() {
-				Expect(subject).To(Equal(map[string]string{
-					"symbol": "symbol is . symbol can't be blank.",
-					"level":  "level is . level is not included in the [L20 L100 full].",
+				Expect(subject).To(Equal([]error{
+					errors.New("{symbol: symbol is . symbol can't be blank.}"),
+					errors.New("{level: level is . level is not included in the [L20 L100 full].}"),
 				}))
 			})
 		})
@@ -75,9 +76,9 @@ var _ = Describe("Validator", func() {
 			subject := validator.Messages()
 
 			It("should return error message", func() {
-				Expect(subject).To(Equal(map[string]string{
-					"symbol":     "symbol is . symbol can't be blank.",
-					"resolution": "resolution is . resolution is not included in the [M1 M3 M5 M15 M30 H1 H4 H6 D1 W1 MN].",
+				Expect(subject).To(Equal([]error{
+					errors.New("{symbol: symbol is . symbol can't be blank.}"),
+					errors.New("{resolution: resolution is . resolution is not included in the [M1 M3 M5 M15 M30 H1 H4 H6 D1 W1 MN].}"),
 				}))
 			})
 		})
@@ -87,8 +88,8 @@ var _ = Describe("Validator", func() {
 			subject := validator.Messages()
 
 			It("should return error message", func() {
-				Expect(subject).To(Equal(map[string]string{
-					"symbol": "symbol is . symbol can't be blank.",
+				Expect(subject).To(Equal([]error{
+					errors.New("{symbol: symbol is . symbol can't be blank.}"),
 				}))
 			})
 		})
@@ -98,8 +99,8 @@ var _ = Describe("Validator", func() {
 			subject := validator.Messages()
 
 			It("should be false", func() {
-				Expect(subject).To(Equal(map[string]string{
-					"symbol": "symbol is . symbol can't be blank.",
+				Expect(subject).To(Equal([]error{
+					errors.New("{symbol: symbol is . symbol can't be blank.}"),
 				}))
 			})
 		})
@@ -109,8 +110,8 @@ var _ = Describe("Validator", func() {
 			subject := validator.Messages()
 
 			It("should be false", func() {
-				Expect(subject).To(Equal(map[string]string{
-					"symbol": "symbol is . symbol can't be blank.",
+				Expect(subject).To(Equal([]error{
+					errors.New("{symbol: symbol is . symbol can't be blank.}"),
 				}))
 			})
 		})
