@@ -1,6 +1,7 @@
 package orders_test
 
 import (
+	"errors"
 	"fcoin_go_client/fcoin/api/endpoint/validator/orders"
 
 	. "github.com/onsi/ginkgo"
@@ -36,7 +37,7 @@ var _ = Describe("CreateOrderMarketValidator", func() {
 			subject := validator.Messages()
 
 			It("should be blank", func() {
-				Expect(subject).To(Equal(map[string]string{}))
+				Expect(subject).To(Equal([]error{}))
 			})
 		})
 
@@ -46,8 +47,8 @@ var _ = Describe("CreateOrderMarketValidator", func() {
 				subject := validator.Messages()
 
 				It("shold return error mesasges", func() {
-					Expect(subject).To(Equal(map[string]string{
-						"amount": "amount is 0. amount is not betweeen 0.001 and 10000.",
+					Expect(subject).To(Equal([]error{
+						errors.New("{amount: amount is 0. amount is not betweeen 0.001 and 10000.}"),
 					}))
 				})
 			})
@@ -57,8 +58,8 @@ var _ = Describe("CreateOrderMarketValidator", func() {
 				subject := validator.Messages()
 
 				It("shold return error mesasges", func() {
-					Expect(subject).To(Equal(map[string]string{
-						"symbol": "symbol is fiusdt. symbol board is not adapted on-going order.",
+					Expect(subject).To(Equal([]error{
+						errors.New("{symbol: symbol is fiusdt. symbol board is not adapted on-going order.}"),
 					}))
 				})
 			})

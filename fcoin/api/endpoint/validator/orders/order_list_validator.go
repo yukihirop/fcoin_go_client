@@ -1,9 +1,8 @@
 package orders
 
 type OrderListValidator interface {
-	NewOrderListValidator(...ParamsOption) *OrderListParams
 	IsValid() bool
-	Messages() map[string]string
+	Messages() []error
 }
 
 type OrderListParams struct {
@@ -23,18 +22,17 @@ func (olp *OrderListParams) IsValid() (ret bool) {
 	return
 }
 
-func (olp *OrderListParams) Messages() (ret map[string]string) {
+func (olp *OrderListParams) Messages() (ret []error) {
 	pa := olp.params
+	ret = []error{}
 	if olp.IsValid() {
-		ret = map[string]string{}
+		return
 	}
-	var results []map[string]string
 	switch {
 	case !pa.isValidSymbol():
-		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+		ret = append(ret, presenceErrorMessage(pa.Symbol, "symbol"))
 	case !pa.isValidStates():
-		results = append(results, includesErrorMessage(pa.States, "states", pa.validStates()))
+		ret = append(ret, includesErrorMessage(pa.States, "states", pa.validStates()))
 	}
-	ret = slice2map(results)
 	return
 }

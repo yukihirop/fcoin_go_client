@@ -1,10 +1,13 @@
 package orders
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type CreateOrderMarketValidator interface {
 	IsValid() bool
-	Message() map[string]string
+	Messages() []error
 }
 
 type CreateOrderMarketParams struct {
@@ -39,43 +42,42 @@ func (comp *CreateOrderMarketParams) IsValid() (ret bool) {
 	return
 }
 
-func (comp *CreateOrderMarketParams) Messages() (ret map[string]string) {
+func (comp *CreateOrderMarketParams) Messages() (ret []error) {
 	pa := comp.params
+	ret = []error{}
 	if comp.IsValid() {
-		ret = map[string]string{}
+		return
 	}
-
-	var results []map[string]string
 	switch {
 	case !pa.isValidSymbol():
-		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+		ret = append(ret, presenceErrorMessage(pa.Symbol, "symbol"))
 	case pa.isValidSymbolSettingExist():
 		switch {
 		case pa.isSell():
 			if !pa.isValidAmount() {
-				results = append(results, betweenErrorMessage(pa.Amount, "amount", pa.min("amount"), pa.max("amount")))
+				ret = append(ret, betweenErrorMessage(pa.Amount, "amount", pa.min("amount"), pa.max("amount")))
 			}
 		case pa.isBuy():
 			if !pa.isValidTotal() {
-				results = append(results, betweenErrorMessage(pa.Total, "total", pa.min("total"), pa.max("total")))
+				ret = append(ret, betweenErrorMessage(pa.Total, "total", pa.min("total"), pa.max("total")))
 			}
 		}
 	case comp.isInvalidSymbolSettingExist():
-		results = append(results, invalidCreateOrderMarketErrorMessage(pa.Symbol, "symbol"))
+		ret = append(ret, invalidCreateOrderMarketErrorMessage(pa.Symbol, "symbol"))
 	}
-	ret = slice2map(results)
 	return
 }
 
-func invalidCreateOrderMarketErrorMessage(target interface{}, targetType string) (ret map[string]string) {
+func invalidCreateOrderMarketErrorMessage(target interface{}, targetType string) (ret error) {
 	var targetValue string
 	if target != nil {
 		targetValue = fmt.Sprint(target)
 	} else {
 		targetValue = "nil"
 	}
-	errorMessage := fmt.Sprintf("%s is %s. %s board is not adapted on-going order.", targetType, targetValue, targetType)
-	ret = map[string]string{targetType: errorMessage}
+	errorMessageValue := fmt.Sprintf("%s is %s. %s board is not adapted on-going order.", targetType, targetValue, targetType)
+	errorMessage := fmt.Sprintf("{%s: %s}", targetType, errorMessageValue)
+	ret = errors.New(errorMessage)
 	return
 }
 

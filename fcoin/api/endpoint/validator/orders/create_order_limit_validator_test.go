@@ -1,6 +1,7 @@
 package orders_test
 
 import (
+	"errors"
 	"fcoin_go_client/fcoin/api/endpoint/validator/orders"
 
 	. "github.com/onsi/ginkgo"
@@ -36,7 +37,7 @@ var _ = Describe("CreateOrderLimitValidator", func() {
 			subject := validator.Messages()
 
 			It("should be blank", func() {
-				Expect(subject).To(Equal(map[string]string{}))
+				Expect(subject).To(Equal([]error{}))
 			})
 		})
 
@@ -45,9 +46,9 @@ var _ = Describe("CreateOrderLimitValidator", func() {
 			subject := validator.Messages()
 
 			It("should return error message", func() {
-				Expect(subject).To(Equal(map[string]string{
-					"price":  "price is 0. price is not betweeen 1 and 10000.",
-					"amount": "amount is 0. amount is not betweeen 0.001 and 10000.",
+				Expect(subject).To(Equal([]error{
+					errors.New("{price: price is 0. price is not betweeen 1 and 10000.}"),
+					errors.New("{amount: amount is 0. amount is not betweeen 0.001 and 10000.}"),
 				}))
 			})
 		})

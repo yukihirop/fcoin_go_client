@@ -1,6 +1,7 @@
 package orders_test
 
 import (
+	"errors"
 	"fcoin_go_client/fcoin/api/endpoint/validator/orders"
 
 	. "github.com/onsi/ginkgo"
@@ -33,7 +34,7 @@ var _ = Describe("OrderListValidator", func() {
 			validator := orders.NewOrderListValidator(orders.Symbol("ethusdt"), orders.States("canceled"), orders.VSetting(fixedViper, customViper, nil))
 			subject := validator.Messages()
 			It("should be blank", func() {
-				Expect(subject).To(Equal(map[string]string{}))
+				Expect(subject).To(Equal([]error{}))
 			})
 		})
 
@@ -41,18 +42,20 @@ var _ = Describe("OrderListValidator", func() {
 			Context("when symbol is blank", func() {
 				validator := orders.NewOrderListValidator(orders.States("canceled"), orders.VSetting(fixedViper, customViper, nil))
 				subject := validator.Messages()
-				errorMessage := map[string]string{"symbol": "symbol is . symbol can't be blank."}
 				It("should return error message", func() {
-					Expect(subject).To(Equal(errorMessage))
+					Expect(subject).To(Equal([]error{
+						errors.New("{symbol: symbol is . symbol can't be blank.}"),
+					}))
 				})
 			})
 
 			Context("when states is invalid", func() {
 				validator := orders.NewOrderListValidator(orders.Symbol("ethusdt"), orders.States("invalid_states"), orders.VSetting(fixedViper, customViper, nil))
 				subject := validator.Messages()
-				errorMessage := map[string]string{"states": "states is invalid_states. states is not included in the [submitted partial_filled canceled partial_canceled filled pending_cancel]."}
 				It("should return error message", func() {
-					Expect(subject).To(Equal(errorMessage))
+					Expect(subject).To(Equal([]error{
+						errors.New("{states: states is invalid_states. states is not included in the [submitted partial_filled canceled partial_canceled filled pending_cancel].}"),
+					}))
 				})
 			})
 		})

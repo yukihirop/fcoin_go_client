@@ -2,7 +2,7 @@ package orders
 
 type CreateOrderLimitValidator interface {
 	IsValid() bool
-	Messages() map[string]string
+	Messages() []error
 }
 
 type CreateOrderLimitParams struct {
@@ -28,26 +28,24 @@ func (colp *CreateOrderLimitParams) IsValid() (ret bool) {
 	return
 }
 
-func (colp *CreateOrderLimitParams) Messages() (ret map[string]string) {
+func (colp *CreateOrderLimitParams) Messages() (ret []error) {
 	pa := colp.params
+	ret = []error{}
 	if colp.IsValid() {
-		ret = map[string]string{}
+		return
 	}
-
-	var results []map[string]string
 	switch {
 	case !pa.isValidSymbol():
-		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+		ret = append(ret, presenceErrorMessage(pa.Symbol, "symbol"))
 	case !pa.isValidSide():
-		results = append(results, includesErrorMessage(pa.Side, "side", pa.validSides()))
+		ret = append(ret, includesErrorMessage(pa.Side, "side", pa.validSides()))
 	case pa.isValidSymbolSettingExist():
 		if !pa.isValidPrice() {
-			results = append(results, betweenErrorMessage(pa.Price, "price", pa.min("price"), pa.max("price")))
+			ret = append(ret, betweenErrorMessage(pa.Price, "price", pa.min("price"), pa.max("price")))
 		}
 		if !pa.isValidAmount() {
-			results = append(results, betweenErrorMessage(pa.Amount, "amount", pa.min("amount"), pa.max("amount")))
+			ret = append(ret, betweenErrorMessage(pa.Amount, "amount", pa.min("amount"), pa.max("amount")))
 		}
 	}
-	ret = slice2map(results)
 	return
 }
