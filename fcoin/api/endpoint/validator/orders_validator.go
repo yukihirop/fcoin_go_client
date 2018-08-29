@@ -5,6 +5,11 @@ import (
 	"fcoin_go_client/fcoin/config"
 )
 
+type OrderValidator interface {
+	IsValid() bool
+	Messages() []error
+}
+
 type OrderParams struct {
 	params *Params
 }
@@ -29,10 +34,11 @@ func (op *OrderParams) IsValid() (ret bool) {
 	return
 }
 
-func (op *OrderParams) Messages() (ret map[string]string) {
+func (op *OrderParams) Messages() (ret []error) {
 	pa := op.params
+	ret = []error{}
 	if op.IsValid() {
-		ret = map[string]string{}
+		return
 	}
 	switch pa.MethodName {
 	case "CreateOrderLimit":

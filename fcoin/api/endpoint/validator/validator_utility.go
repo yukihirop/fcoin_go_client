@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -28,38 +29,41 @@ func slice2map(data []map[string]string) (ret map[string]string) {
 	return
 }
 
-func includesErrorMessage(target interface{}, targetType string, list []string) (ret map[string]string) {
+func includesErrorMessage(target interface{}, targetType string, list []string) (ret error) {
 	var targetValue string
 	if target != nil {
 		targetValue = fmt.Sprint(target)
 	} else {
 		targetValue = "nil"
 	}
-	errorMessage := fmt.Sprintf("%s is %s. %s is not included in the %s.", targetType, targetValue, targetType, list)
-	ret = map[string]string{targetType: errorMessage}
+	errorMessageValue := fmt.Sprintf("%s is %s. %s is not included in the %s.", targetType, targetValue, targetType, list)
+	errorMessage := fmt.Sprintf("{%s: %s}", targetType, errorMessageValue)
+	ret = errors.New(errorMessage)
 	return
 }
 
-func betweenErrorMessage(target interface{}, targetType string, min float64, max float64) (ret map[string]string) {
+func betweenErrorMessage(target interface{}, targetType string, min float64, max float64) (ret error) {
 	var targetValue string
 	if target != nil {
 		targetValue = fmt.Sprint(target)
 	} else {
 		targetValue = "nil"
 	}
-	errorMessage := fmt.Sprintf("%s is %s. %s is not betweeen %s and %s.", targetType, targetValue, targetType, fmt.Sprint(min), fmt.Sprint(max))
-	ret = map[string]string{targetType: errorMessage}
+	errorMessageValue := fmt.Sprintf("%s is %s. %s is not betweeen %s and %s.", targetType, targetValue, targetType, fmt.Sprint(min), fmt.Sprint(max))
+	errorMessage := fmt.Sprintf("{%s: %s}", targetType, errorMessageValue)
+	ret = errors.New(errorMessage)
 	return
 }
 
-func presenceErrorMessage(target interface{}, targetType string) (ret map[string]string) {
+func presenceErrorMessage(target interface{}, targetType string) (ret error) {
 	var targetValue string
 	if target != nil {
 		targetValue = fmt.Sprint(target)
 	} else {
 		targetValue = "nil"
 	}
-	errorMessage := fmt.Sprintf("%s is %s. %s can't be blank.", targetType, targetValue, targetType)
-	ret = map[string]string{targetType: errorMessage}
+	errorMessageValue := fmt.Sprintf("%s is %s. %s can't be blank.", targetType, targetValue, targetType)
+	errorMessage := fmt.Sprintf("{%s: %s}", targetType, errorMessageValue)
+	ret = errors.New(errorMessage)
 	return
 }

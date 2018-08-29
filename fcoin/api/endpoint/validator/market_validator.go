@@ -4,6 +4,11 @@ type MarketParams struct {
 	params *Params
 }
 
+type MarketValidator interface {
+	IsValid() bool
+	Messages() []error
+}
+
 func NewMarketValidator(opts ...ParamsOption) (ret *MarketParams) {
 	pa := setParams(opts)
 	ret = &MarketParams{}
@@ -26,29 +31,28 @@ func (mp *MarketParams) IsValid() (ret bool) {
 	return
 }
 
-func (mp *MarketParams) Messages() (ret map[string]string) {
+func (mp *MarketParams) Messages() (ret []error) {
 	pa := mp.params
+	ret = []error{}
 	if mp.IsValid() {
-		ret = map[string]string{}
+		return
 	}
-	var results []map[string]string
 
 	if !mp.isValidSymbol() {
-		results = append(results, presenceErrorMessage(pa.Symbol, "symbol"))
+		ret = append(ret, presenceErrorMessage(pa.Symbol, "symbol"))
 	}
 
 	switch pa.MethodName {
 	case "MarketDepth":
 
 		if !mp.isValidLevel() {
-			results = append(results, includesErrorMessage(pa.Level, "level", mp.validLevels()))
+			ret = append(ret, includesErrorMessage(pa.Level, "level", mp.validLevels()))
 		}
 	case "MarketCandles":
 		if !mp.isValidResolution() {
-			results = append(results, includesErrorMessage(pa.Resolution, "resolution", mp.validResolutions()))
+			ret = append(ret, includesErrorMessage(pa.Resolution, "resolution", mp.validResolutions()))
 		}
 	}
-	ret = slice2map(results)
 	return
 }
 
