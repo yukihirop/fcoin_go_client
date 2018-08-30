@@ -1,4 +1,4 @@
-package endpoint_test
+package validator_test
 
 import (
 	"fcoin_go_client/fcoin/config"
@@ -20,7 +20,7 @@ func SetValidationSetting() {
 	VSetting.SetValidationSetting()
 }
 
-func TestEndpoint(t *testing.T) {
+func TestValidator(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Endpoint Suite")
+	RunSpecs(t, "Validator Suite")
 }

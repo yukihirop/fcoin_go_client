@@ -1,9 +1,7 @@
-package endpoint
+package orders
 
 import (
-	"fcoin_go_client/fcoin/api/endpoint/validator"
 	"fcoin_go_client/fcoin/config"
-	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -18,13 +16,10 @@ type Params struct {
 	Total      float64
 	Type       string
 	States     string
-	PageBefore string
-	PageAfter  string
-	PerPage    string
-	OrderId    string
-	MethodName string
 
-	VSetting *config.ValidationSetting
+	ValidSymbols   map[string]*ValidSymbolSetting
+	InvalidSymbols *InvalidSymbolSetting
+	VSetting       *config.ValidationSetting
 }
 
 type ParamsOption func(*Params)
@@ -84,36 +79,6 @@ func States(s string) ParamsOption {
 	}
 }
 
-func PageBefore(pb int) ParamsOption {
-	return func(pa *Params) {
-		pa.PageBefore = fmt.Sprint(pb)
-	}
-}
-
-func PageAfter(paa int) ParamsOption {
-	return func(pa *Params) {
-		pa.PageAfter = fmt.Sprint(paa)
-	}
-}
-
-func PerPage(pp int) ParamsOption {
-	return func(pa *Params) {
-		pa.PerPage = fmt.Sprint(pp)
-	}
-}
-
-func OrderId(o string) ParamsOption {
-	return func(pa *Params) {
-		pa.OrderId = o
-	}
-}
-
-func MethodName(m string) ParamsOption {
-	return func(pa *Params) {
-		pa.MethodName = m
-	}
-}
-
 func VSetting(fixedViper, customViper *viper.Viper, customSettingPath interface{}) ParamsOption {
 	return func(pa *Params) {
 		pa.VSetting = new(config.ValidationSetting)
@@ -123,25 +88,26 @@ func VSetting(fixedViper, customViper *viper.Viper, customSettingPath interface{
 	}
 }
 
-func validatorParams(pa *Params) *validator.Params {
-	var params validator.Params
-	params.Symbol = pa.Symbol
-	params.Level = pa.Level
-	params.Resolution = pa.Resolution
-	params.Side = pa.Side
-	params.Amount = pa.Amount
-	params.Total = pa.Total
-	params.Type = pa.Type
-	params.States = pa.States
-	params.MethodName = pa.MethodName
-	params.VSetting = pa.VSetting
-	return &params
-}
-
 func setParams(opts ParamsOptions) (pa *Params) {
 	pa = &Params{}
 	for _, opt := range opts {
 		opt(pa)
 	}
 	return
+}
+
+func (pa *Params) isLimit() bool {
+	return pa.Type == "limit"
+}
+
+func (pa *Params) isMarket() bool {
+	return pa.Type == "market"
+}
+
+func (pa *Params) isSell() bool {
+	return pa.Side == "sell"
+}
+
+func (pa *Params) isBuy() bool {
+	return pa.Side == "buy"
 }

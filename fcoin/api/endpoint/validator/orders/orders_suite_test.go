@@ -1,4 +1,4 @@
-package endpoint_test
+package orders_test
 
 import (
 	"fcoin_go_client/fcoin/config"
@@ -20,7 +20,7 @@ func SetValidationSetting() {
 	VSetting.SetValidationSetting()
 }
 
-func TestEndpoint(t *testing.T) {
+func TestOrders(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Endpoint Suite")
+	RunSpecs(t, "Orders Suite")
 }

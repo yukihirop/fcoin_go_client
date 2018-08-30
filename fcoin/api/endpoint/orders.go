@@ -12,15 +12,18 @@ func CreateOrderLimit(c *Configure, opts ...ParamsOption) (ret string, err error
 	order.Type = "limit"
 	baseURL := c.getUrl("orders", "CreateOrderLimit")
 	values := url.Values{}
+
+	price := fmt.Sprint(order.Price)
+	amount := fmt.Sprint(order.Amount)
 	// alphabet order
 	values.Add("type", order.Type)
 	values.Add("side", order.Side)
 	values.Add("symbol", order.Symbol)
-	values.Add("price", order.Price)
-	values.Add("amount", order.Amount)
+	values.Add("price", price)
+	values.Add("amount", amount)
 	reader := bytes.NewBuffer(validJSONBody(values))
 	// alphabet order
-	validPayload := map[string]string{"amount": order.Amount, "side": order.Side, "symbol": order.Symbol, "price": order.Price, "type": order.Type}
+	validPayload := map[string]string{"amount": amount, "side": order.Side, "symbol": order.Symbol, "price": price, "type": order.Type}
 	ret, err = apiConfig(c).Post(baseURL, reader, validPayload, true)
 	if err != nil {
 		fmt.Println(err)
